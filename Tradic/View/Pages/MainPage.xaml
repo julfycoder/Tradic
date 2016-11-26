@@ -1,0 +1,55 @@
+﻿<Page x:Class="Tradic.View.Pages.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="515" d:DesignWidth="814" ShowsNavigationUI="False" Background="#FF107095"
+	Title="MainPage">
+
+    <Grid>
+        <ListBox HorizontalAlignment="Left" Height="217" Margin="297,100,0,0" VerticalAlignment="Top" Width="202" RenderTransformOrigin="0.5,0.5" ItemsSource="{Binding Path=OriginalWords, Mode=TwoWay}" Background="#FF7A72AA" BorderBrush="#FFECA146" SelectedItem="{Binding Path=SelectedOriginalWord, Mode=TwoWay}"  FontWeight="SemiBold" FontSize="16">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Text}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox x:Name="ListBox1" HorizontalAlignment="Left" Height="217" Margin="74,100,0,0" VerticalAlignment="Top" Width="140" RenderTransformOrigin="0.5,0.5" FontWeight="SemiBold" FontSize="16" ItemsSource="{Binding Path=OriginalLanguages, Mode=OneWay}" SelectedItem="{Binding Path=SelectedOriginalLanguage, Mode=TwoWay}" Background="#FF7A72AA" BorderBrush="#FFECA146">
+            <ListBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="11"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="19"/>
+                </TransformGroup>
+            </ListBox.RenderTransform>
+        </ListBox>
+        <ListBox x:Name="ListBox2" Height="217" HorizontalAlignment="Left" Width="140" Margin="579,101,95,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" FontWeight="SemiBold" FontSize="16" ItemsSource="{Binding Path=TranslationLanguages, Mode=OneWay}" SelectedItem="{Binding Path=SelectedTranslationLanguage, Mode=TwoWay}" Background="#FF7A72AA" BorderBrush="#FFECA146">
+            <ListBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="-11"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="-19"/>
+                </TransformGroup>
+            </ListBox.RenderTransform>
+        </ListBox>
+        <Button x:Name="RemoveWordButton" Content="Remove word" HorizontalAlignment="Left" Margin="92,344,0,0" VerticalAlignment="Top" Width="148" Height="28" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=RemoveOriginalWordCommand}">
+
+        </Button>
+        <Button x:Name="AddButton" Content="Add word" HorizontalAlignment="Left" Margin="480,35,0,0" VerticalAlignment="Top" Width="112" Height="28" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Background="Orange" Command="{Binding Path=GoToAddWordPageCommand}"/>
+        <Button x:Name="RemoveTranslationButton" Content="Remove translation" HorizontalAlignment="Left" Margin="92,401,0,86" Width="148" Height="28" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=RemoveTranslationCommand}"/>
+        <Label Content="Translations: " HorizontalAlignment="Left" Margin="297,344,0,0" VerticalAlignment="Top"  FontWeight="SemiBold" FontSize="16" Foreground="#FF8BD1AE"/>
+        <ListBox x:Name="TranslationsBox" HorizontalAlignment="Left" Height="114" Margin="297,377,0,0" VerticalAlignment="Top" Width="202" BorderBrush="#FFECA146" Background="#FF7A72AA" ItemsSource="{Binding Path=TranslationWords, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedTranslationWord, Mode=TwoWay}"  FontWeight="SemiBold" FontSize="16">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Text}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button x:Name="RemoveTranslationButton_Copy" Content="Add translation" HorizontalAlignment="Left" Margin="541,377,0,110" Width="148" Height="28" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=AddNewTranslationCommand}"/>
+        <TextBox HorizontalAlignment="Left" Height="30" Margin="541,415,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=OneWayToSource}" VerticalAlignment="Top" Width="148"/>
+
+    </Grid>
+</Page>

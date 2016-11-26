@@ -1,0 +1,14 @@
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\TradicConsole.exe.config
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\TradicConsole.exe
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\TradicConsole.pdb
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\obj\Debug\TradicConsole.csprojResolveAssemblyReference.cache
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\obj\Debug\TradicConsole.exe
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\obj\Debug\TradicConsole.pdb
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\Tradic.Business.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\Tradic.DAL.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\EntityFramework.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\Tradic.Business.pdb
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\Tradic.DAL.pdb
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\EntityFramework.xml
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\EntityFramework.SqlServer.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\TradicConsole\bin\Debug\EntityFramework.SqlServer.xml

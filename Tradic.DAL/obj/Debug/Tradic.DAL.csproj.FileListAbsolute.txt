@@ -1,0 +1,10 @@
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\obj\Debug\Tradic.DAL.csprojResolveAssemblyReference.cache
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\bin\Debug\Tradic.DAL.dll.config
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\bin\Debug\Tradic.DAL.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\bin\Debug\Tradic.DAL.pdb
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\bin\Debug\EntityFramework.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\bin\Debug\EntityFramework.SqlServer.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\bin\Debug\EntityFramework.xml
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\bin\Debug\EntityFramework.SqlServer.xml
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\obj\Debug\Tradic.DAL.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.DAL\obj\Debug\Tradic.DAL.pdb
