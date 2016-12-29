@@ -50,6 +50,7 @@
         </ListBox>
         <Button x:Name="RemoveTranslationButton_Copy" Content="Add translation" HorizontalAlignment="Left" Margin="541,377,0,110" Width="148" Height="28" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=AddNewTranslationCommand}"/>
         <TextBox HorizontalAlignment="Left" Height="30" Margin="541,415,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=OneWayToSource}" VerticalAlignment="Top" Width="148"/>
+        <Button x:Name="AddButton_Copy" Content="Testing" HorizontalAlignment="Left" Margin="57,35,0,0" VerticalAlignment="Top" Width="112" Height="28" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Background="Orange" Command="{Binding Path=GoToTestingPageCommand}"/>
 
     </Grid>
 </Page>

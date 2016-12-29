@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Tradic.Business;
 using Tradic.DAL;
 using Tradic.DAL.Entity;
+using System.Threading;
 
 namespace TradicConsole
 {
@@ -23,9 +24,94 @@ namespace TradicConsole
             Console.InputEncoding = Encoding.GetEncoding(1251);
             Console.OutputEncoding = Encoding.GetEncoding(1251);
             TradicDataAccess access = new TradicDataAccess();
-            WordHelper helper = new WordHelper(access);
+            WordHelper wordHelper = new WordHelper(access);
             TranslationHelper transHelper = new TranslationHelper(access);
 
+            //Interview(transHelper, wordHelper);
+
+            GetRandomWords(wordHelper);
+
+            Console.ReadLine();
+        }
+        //static void GetRandomWords2(WordHelper wordHelper)
+        //{
+        //    int x = 0;
+        //    double amount;
+        //    List<Word> Words = wordHelper.GetWords().ToList();
+        //    amount = Words.Count;
+        //    Random rnd = new Random();
+
+        //    int[] counts = new int[(int)amount];
+        //    foreach (Word w in Words)
+        //    {
+        //        Console.WriteLine(w.Text);
+        //    }
+        //    Console.WriteLine();
+        //    while (true)
+        //    {
+        //        x = 0;
+        //        amount = Words.Count;
+        //        Thread.Sleep(rnd.Next(10));
+        //        while (amount > 0.5)
+        //        {
+        //            int half = rnd.Next(2);
+        //            half = rnd.Next(half + 1);
+        //            amount -= ((int)amount) / (double)2;
+        //            x += (int)(amount * half);
+        //        }
+        //        counts[x]++;
+        //        Console.CursorLeft = 0;
+        //        Console.CursorTop = Words.Count + 1;
+        //        for (int i = 0; i < Words.Count; i++) Console.WriteLine(counts[i]);
+        //    }
+        //}
+        static void GetRandomWords(WordHelper wordHelper)
+        {
+            List<Word> Words = wordHelper.GetWords().ToList();
+            int N = Words.Count;
+            int delay = 150;
+            int[] counts = new int[N];
+            Random rnd = new Random();
+
+            foreach (Word w in Words)
+            {
+                Console.WriteLine(w.Text);
+            }
+            Console.WriteLine();
+            while (true)
+            {
+                Thread.Sleep(GetRandom(2, delay));
+                double r1 = (double)rnd.Next(0, N + 1);
+                Thread.Sleep(GetRandom(2, delay));
+                double r2 = rnd.Next(0, (int)r1);
+
+                double y = (N - 1) - r2;
+                counts[(int)y]++;
+
+                Console.CursorLeft = 0;
+                Console.CursorTop = N+1;
+                for (int i = 0; i < N; i++)
+                {
+                    Console.WriteLine(counts[i]);
+                }
+
+                //Word bingo=Words[(int)y];
+                //Console.Write(bingo.Text);
+
+                //Console.ReadLine();
+            }
+        }
+        static int GetRandom(int deep, int value)
+        {
+            Random rnd = new Random();
+            if (deep > 0)
+            {
+                value = rnd.Next(GetRandom(deep - 1, value));
+            }
+            return value;
+        }
+        static void Interview(TranslationHelper transHelper, WordHelper wordHelper)
+        {
             while (true)
             {
                 Console.WriteLine("Add new word 'A', Add translation word 'B', Watch translations 'C', Remove translation 'D':");
@@ -34,25 +120,23 @@ namespace TradicConsole
                 {
                     case "A":
                         {
-                            AddNewWord(transHelper, helper);
+                            AddNewWord(transHelper, wordHelper);
                         } break;
                     case "B":
                         {
-                            AddTranslationWord(transHelper, helper);
+                            AddTranslationWord(transHelper, wordHelper);
                         } break;
                     case "C":
                         {
-                            WatchTranslations(transHelper, helper);
+                            WatchTranslations(transHelper, wordHelper);
                         } break;
                     case "D":
                         {
-                            RemoveTranslation(transHelper, helper);
-                        }break;
+                            RemoveTranslation(transHelper, wordHelper);
+                        } break;
                     default: Console.WriteLine("Unrecognized command"); break;
                 }
             }
-
-            Console.ReadLine();
         }
         static Translation AddNewTranslation(TranslationHelper helper)
         {

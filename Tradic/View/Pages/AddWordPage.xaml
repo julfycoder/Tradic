@@ -12,8 +12,8 @@
         <Label Content="Translation" HorizontalAlignment="Left" Margin="566,93,0,0" VerticalAlignment="Top" Foreground="#FFF1F592"/>
         <Label Content="Word" HorizontalAlignment="Left" Margin="566,229,0,0" VerticalAlignment="Top" Foreground="#FFF1F592"/>
         <Label Content="Word" HorizontalAlignment="Left" Margin="128,229,0,0" VerticalAlignment="Top" Foreground="#FFF1F592"/>
-        <TextBox x:Name="OrigianlWordBox" HorizontalAlignment="Left" Margin="116,260,0,232" TextWrapping="Wrap" Width="120" Height="23" Text="{Binding Path=OriginalWordText, Mode=OneWayToSource}"/>
-        <TextBox x:Name="TranslationWordsBox" HorizontalAlignment="Left" Height="23" Margin="549,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Path=TranslationWordText, Mode=OneWayToSource}"/>
+        <TextBox x:Name="OrigianlWordBox" HorizontalAlignment="Left" Margin="116,260,0,232" TextWrapping="Wrap" Width="120" Height="23" Text="{Binding Path=OriginalWordText, Mode=TwoWay}"/>
+        <TextBox x:Name="TranslationWordsBox" HorizontalAlignment="Left" Height="23" Margin="549,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Path=TranslationWordText, Mode=TwoWay}"/>
         <ListBox x:Name="OriginalLanguagesBox" HorizontalAlignment="Left" Height="70" Margin="116,124,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding Path=OriginalLanguages, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedOriginalLanguage, Mode=TwoWay}"/>
         <ListBox x:Name="TranslationLanguagesBox" Height="70" Margin="549,124,145,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding Path=TranslationLanguages, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedTranslationLanguage, Mode=TwoWay}"/>
         <Button x:Name="WatchButton" Content="Dictionary" HorizontalAlignment="Left" Margin="32,30,0,0" VerticalAlignment="Top" Width="148" Height="28" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GoToMainPageCommand}"/>

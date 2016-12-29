@@ -22,8 +22,9 @@ namespace Tradic.ViewModel
         IAccessible dataAccess;
         public AddWordPageViewModel(Page currentPage)
         {
-            dataAccess = new TradicAccessible();
+            dataAccess = TradicAccessible.GetInstance();
             OriginalLanguages = new ObservableCollection<string> { "English", "Russian" };
+            SelectedOriginalLanguage = OriginalLanguages[0];
             GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
             AddNewWordCommand = new Command(arg => AddNewWord());
         }
@@ -51,6 +52,8 @@ namespace Tradic.ViewModel
 
                 dataAccess.AddEntity(new Word { Text = OriginalWordText, Language = SelectedOriginalLanguage, TranslationId = translation.Id });
                 dataAccess.AddEntity(new Word { Text = TranslationWordText, Language = SelectedTranslationLanguage, TranslationId = translation.Id });
+                OriginalWordText = "";
+                TranslationWordText = "";
             }
         }
 
@@ -58,10 +61,19 @@ namespace Tradic.ViewModel
 
         #region Properties
 
+        ObservableCollection<string> _original_languages;
         public ObservableCollection<string> OriginalLanguages
         {
-            get;
-            set;
+            get
+            {
+                return _original_languages;
+            }
+            set
+            {
+                _original_languages = value;
+                TranslationLanguages = new ObservableCollection<string>(OriginalLanguages.Where(l => l != _selected_original_language));
+                SelectedTranslationLanguage = TranslationLanguages[0];//////////////////////////////////////////////////
+            }
         }
 
         ObservableCollection<string> _translation_languages;

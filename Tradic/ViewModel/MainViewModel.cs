@@ -19,23 +19,44 @@ namespace Tradic.ViewModel
         IAccessible dataAccess;
         public event PropertyChangedEventHandler PropertyChanged;
         ObservableCollection<Word> Words;
+        Page currentPage;
 
         public MainViewModel(Page currentPage)
         {
-            dataAccess = new TradicAccessible();
-            Words = new ObservableCollection<Word>(dataAccess.GetWords().ToList());
-
-            OriginalLanguages = new ObservableCollection<string> { "English", "Russian" };
-            SelectedOriginalLanguage = OriginalLanguages.ToList()[0];
-            OriginalWords = new ObservableCollection<Word>(Words.Where(w => w.Language == SelectedOriginalLanguage));
+           
+            this.currentPage = currentPage;
+            dataAccess = TradicAccessible.GetInstance();
+            Words = new ObservableCollection<Word>(dataAccess.GetWords());
+            Initialize();
             PropertyChanged += UpdateTranslations;
 
-            RemoveTranslationCommand = new Command(arg=>RemoveTranslation());
+            
+        }
+
+        #region Initialization
+
+        void Initialize()
+        {
+            InitializeCommands();
+            InitializeProperties();
+        }
+        void InitializeCommands()
+        {
+            RemoveTranslationCommand = new Command(arg => RemoveTranslation());
             RemoveOriginalWordCommand = new Command(arg => RemoveOriginalWord());
             GoToAddWordPageCommand = new Command(arg => GoToAddWordPage(currentPage));
             AddNewTranslationCommand = new Command(arg => AddNewTranslation());
+            GoToTestingPageCommand = new Command(arg => GoToTestingPage(currentPage));
+        }
+        void InitializeProperties()
+        {
+            OriginalLanguages = new ObservableCollection<string> { "English", "Russian" };
+            SelectedOriginalLanguage = OriginalLanguages.ToList()[0];
+            OriginalWords = new ObservableCollection<Word>(Words.Where(w => w.Language == SelectedOriginalLanguage));
             TranslationWords = new ObservableCollection<Word>();
         }
+
+        #endregion
 
         void NotifyPropertyChanged(string propertyName)
         {
@@ -96,13 +117,19 @@ namespace Tradic.ViewModel
         public ICommand AddNewTranslationCommand { get; set; }
         void AddNewTranslation()
         {
-            if (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null && SelectedOriginalWord != null&&TranslationWord!=null)
+            if (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null && SelectedOriginalWord != null&&TranslationWord!=null&&TranslationWord!="")
             {
                 Word translation = new Word { Text = TranslationWord, Language = SelectedTranslationLanguage, TranslationId = SelectedOriginalWord.TranslationId };
                 dataAccess.AddEntity(translation);
                 Words.Add(translation);
                 TranslationWords.Add(translation);
             }
+        }
+
+        public ICommand GoToTestingPageCommand { get; set; }
+        void GoToTestingPage(Page currentPage)
+        {
+            currentPage.NavigationService.Navigate(new TestingPage());
         }
 
         #endregion

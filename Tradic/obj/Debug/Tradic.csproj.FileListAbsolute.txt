@@ -24,3 +24,5 @@ D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic\obj\D
 D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic\obj\Debug\View\Pages\MainPage.g.cs
 D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic\obj\Debug\View\Pages\AddWordPage.baml
 D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic\obj\Debug\View\Pages\AddWordPage.g.cs
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic\obj\Debug\View\Pages\TestingPage.baml
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic\obj\Debug\View\Pages\TestingPage.g.cs

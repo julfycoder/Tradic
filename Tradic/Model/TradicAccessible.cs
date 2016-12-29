@@ -10,14 +10,12 @@ namespace Tradic.Model
 {
     public class TradicAccessible : IAccessible
     {
-        ITranslationHelper transHelper;
-        IWordHelper wordHelper;
-        public TradicAccessible()
-        {
-            TradicDataAccess access = new TradicDataAccess();
-            transHelper = new TranslationHelper(access);
-            wordHelper = new WordHelper(access);
-        }
+        static ITranslationHelper transHelper;
+        static IWordHelper wordHelper;
+        static IAccessible CurrentInstance;
+
+        protected TradicAccessible() { }
+
         public void AddEntity(Entity.Word word)
         {
             wordHelper.AddEntity(new DAL.Entity.Word { Text = word.Text, Language = word.Language, TranslationId = word.TranslationId });
@@ -58,6 +56,18 @@ namespace Tradic.Model
                 Tradic_Translations.Add(new Entity.Translation { Id = dal_translation.Id });
             }
             return Tradic_Translations;
+        }
+
+        public static IAccessible GetInstance()
+        {
+            if (CurrentInstance == null)
+            {
+                CurrentInstance = new TradicAccessible();
+                TradicDataAccess access = new TradicDataAccess();
+                transHelper = new TranslationHelper(access);
+                wordHelper = new WordHelper(access);
+            }
+            return CurrentInstance;
         }
     }
 }
