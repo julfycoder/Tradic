@@ -11,11 +11,14 @@ namespace Tradic.Model
     {
         void AddEntity(Word word);
         void AddEntity(Translation translation);
+        void AddEntity(Language language);
 
         void RemoveEntity(Word word);
         void RemoveEntity(Translation translation);
+        void RemoveEntity(Language language);
 
         IEnumerable<Word> GetWords();
         IEnumerable<Translation> GetTranslations();
+        IEnumerable<Language> GetLanguages();
     }
 }

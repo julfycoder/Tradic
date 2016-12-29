@@ -23,8 +23,7 @@ namespace Tradic.ViewModel
         public AddWordPageViewModel(Page currentPage)
         {
             dataAccess = TradicAccessible.GetInstance();
-            OriginalLanguages = new ObservableCollection<string> { "English", "Russian" };
-            SelectedOriginalLanguage = OriginalLanguages[0];
+            OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
             GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
             AddNewWordCommand = new Command(arg => AddNewWord());
         }
@@ -45,13 +44,13 @@ namespace Tradic.ViewModel
         public ICommand AddNewWordCommand { get; set; }
         void AddNewWord()
         {
-            if (OriginalWordText != null && TranslationWordText != null&&(SelectedOriginalLanguage!=null&&SelectedTranslationLanguage!=null))
+            if (OriginalWordText != null && TranslationWordText != null && (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null))
             {
                 dataAccess.AddEntity(new Translation());
                 Translation translation = dataAccess.GetTranslations().Last();
 
-                dataAccess.AddEntity(new Word { Text = OriginalWordText, Language = SelectedOriginalLanguage, TranslationId = translation.Id });
-                dataAccess.AddEntity(new Word { Text = TranslationWordText, Language = SelectedTranslationLanguage, TranslationId = translation.Id });
+                dataAccess.AddEntity(new Word { Text = OriginalWordText, LanguageId = SelectedOriginalLanguage.Id, TranslationId = translation.Id });
+                dataAccess.AddEntity(new Word { Text = TranslationWordText, LanguageId = SelectedTranslationLanguage.Id, TranslationId = translation.Id });
                 OriginalWordText = "";
                 TranslationWordText = "";
             }
@@ -61,8 +60,8 @@ namespace Tradic.ViewModel
 
         #region Properties
 
-        ObservableCollection<string> _original_languages;
-        public ObservableCollection<string> OriginalLanguages
+        ObservableCollection<Language> _original_languages;
+        public ObservableCollection<Language> OriginalLanguages
         {
             get
             {
@@ -71,13 +70,14 @@ namespace Tradic.ViewModel
             set
             {
                 _original_languages = value;
-                TranslationLanguages = new ObservableCollection<string>(OriginalLanguages.Where(l => l != _selected_original_language));
+                SelectedOriginalLanguage = OriginalLanguages[0];
+                TranslationLanguages = new ObservableCollection<Language>(OriginalLanguages.Where(l => l.Id != _selected_original_language.Id));
                 SelectedTranslationLanguage = TranslationLanguages[0];//////////////////////////////////////////////////
             }
         }
 
-        ObservableCollection<string> _translation_languages;
-        public ObservableCollection<string> TranslationLanguages
+        ObservableCollection<Language> _translation_languages;
+        public ObservableCollection<Language> TranslationLanguages
         {
             get
             {
@@ -90,8 +90,8 @@ namespace Tradic.ViewModel
             }
         }
 
-        string _selected_original_language;
-        public string SelectedOriginalLanguage
+        Language _selected_original_language;
+        public Language SelectedOriginalLanguage
         {
             get
             {
@@ -100,13 +100,14 @@ namespace Tradic.ViewModel
             set
             {
                 _selected_original_language = value;
-                TranslationLanguages = new ObservableCollection<string>(OriginalLanguages.Where(l => l != _selected_original_language));
+                TranslationLanguages = new ObservableCollection<Language>(OriginalLanguages.Where(l => l.Id != _selected_original_language.Id));
+                SelectedTranslationLanguage = TranslationLanguages[0];
                 NotifyPropertyChanged("SelectedOriginalLanguage");
             }
         }
 
-        string _selected_translation_language;
-        public string SelectedTranslationLanguage
+        Language _selected_translation_language;
+        public Language SelectedTranslationLanguage
         {
             get
             {

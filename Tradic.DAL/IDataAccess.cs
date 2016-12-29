@@ -12,6 +12,8 @@ namespace Tradic.DAL
     {
         IEnumerable<Translation> Translations { get; }
         IEnumerable<Word> Words { get; }
+        IEnumerable<Language> Languages { get; }
+
         void Change<T>(T entity) where T : Entity.Entity;
         void AddEntity<T>(T entity) where T : Entity.Entity;
         void RemoveEntity<T>(T entity) where T : Entity.Entity;

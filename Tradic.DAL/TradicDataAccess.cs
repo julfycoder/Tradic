@@ -8,7 +8,7 @@ using System.Data.Entity;
 
 namespace Tradic.DAL
 {
-    public class TradicDataAccess:IDataAccess
+    public class TradicDataAccess : IDataAccess
     {
         TradicContext context = new TradicContext();
         public IEnumerable<Entity.Translation> Translations
@@ -20,8 +20,12 @@ namespace Tradic.DAL
         {
             get { return context.Words; }
         }
+        public IEnumerable<Entity.Language> Languages
+        {
+            get { return context.Languages; }
+        }
 
-        public void Change<T>(T entity) where T:Entity.Entity
+        public void Change<T>(T entity) where T : Entity.Entity
         {
             context.Entry(entity).State = EntityState.Modified;
         }

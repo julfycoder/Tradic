@@ -8,12 +8,13 @@ using Tradic.DAL.Entity;
 
 namespace Tradic.DAL
 {
-    class TradicContext : DbContext
+    public class TradicContext : DbContext
     {
         public TradicContext()
-            : base("name=TradicDbConnection")
+            : base("name=TradicDatabaseConnection")
         { }
         public DbSet<Translation> Translations { get; set; }
         public DbSet<Word> Words { get; set; }
+        public DbSet<Language> Languages { get; set; }
     }
 }

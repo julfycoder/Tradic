@@ -12,18 +12,24 @@ namespace Tradic.Model
     {
         static ITranslationHelper transHelper;
         static IWordHelper wordHelper;
+        static ILanguageHelper languageHelper;
         static IAccessible CurrentInstance;
 
         protected TradicAccessible() { }
 
         public void AddEntity(Entity.Word word)
         {
-            wordHelper.AddEntity(new DAL.Entity.Word { Text = word.Text, Language = word.Language, TranslationId = word.TranslationId });
+            wordHelper.AddEntity(new DAL.Entity.Word { Text = word.Text, LanguageId = word.LanguageId, TranslationId = word.TranslationId });
         }
 
         public void AddEntity(Entity.Translation translation)
         {
             transHelper.AddEntity(new DAL.Entity.Translation());
+        }
+        
+        public void AddEntity(Entity.Language language)
+        {
+            languageHelper.AddEntity(new DAL.Entity.Language { Name = language.Name });
         }
 
         public void RemoveEntity(Entity.Word word)
@@ -36,13 +42,18 @@ namespace Tradic.Model
             transHelper.RemoveEntity(transHelper.GetTranslations().First(w => w.Id == translation.Id));
         }
 
+        public void RemoveEntity(Entity.Language language)
+        {
+            languageHelper.RemoveEntity(languageHelper.GetLanguages().First(l => l.Id == language.Id));
+        }
+
         public IEnumerable<Entity.Word> GetWords()
         {
             IEnumerable<DAL.Entity.Word> DAL_Words = wordHelper.GetWords();
             List<Entity.Word> Tradic_Words = new List<Entity.Word>();
             foreach (DAL.Entity.Word dal_word in DAL_Words)
             {
-                Tradic_Words.Add(new Entity.Word { Id = dal_word.Id, Text = dal_word.Text, Language = dal_word.Language, TranslationId = dal_word.TranslationId });
+                Tradic_Words.Add(new Entity.Word { Id = dal_word.Id, Text = dal_word.Text, LanguageId = dal_word.LanguageId, TranslationId = dal_word.TranslationId });
             }
             return Tradic_Words;
         }
@@ -58,6 +69,17 @@ namespace Tradic.Model
             return Tradic_Translations;
         }
 
+        public IEnumerable<Entity.Language> GetLanguages()
+        {
+            IEnumerable<DAL.Entity.Language> DAL_Languages = languageHelper.GetLanguages();
+            List<Entity.Language> Tradic_Language = new List<Entity.Language>();
+            foreach (DAL.Entity.Language dal_language in DAL_Languages)
+            {
+                Tradic_Language.Add(new Entity.Language { Id = dal_language.Id, Name = dal_language.Name });
+            }
+            return Tradic_Language;
+        }
+
         public static IAccessible GetInstance()
         {
             if (CurrentInstance == null)
@@ -66,8 +88,10 @@ namespace Tradic.Model
                 TradicDataAccess access = new TradicDataAccess();
                 transHelper = new TranslationHelper(access);
                 wordHelper = new WordHelper(access);
+                languageHelper = new LanguageHelper(access);
             }
             return CurrentInstance;
         }
+        
     }
 }

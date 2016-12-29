@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Entity\Language.cs" />
     <Compile Include="Entity\Translation.cs" />
     <Compile Include="Entity\Word.cs" />
     <Compile Include="IDataAccess.cs" />

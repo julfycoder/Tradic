@@ -8,12 +8,18 @@
 	Title="TestingPage">
 
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="113,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="113,241,0,0" TextWrapping="Wrap" Text="{Binding Path=OriginalWord, Mode=OneWay}" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="540,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Button Content="Apply" HorizontalAlignment="Left" Margin="540,293,0,0" VerticalAlignment="Top" Width="120"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" />
-        <Button Content="Next" HorizontalAlignment="Left" Margin="540,330,0,0" VerticalAlignment="Top" Width="120"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" />
+        <Button Content="Next" HorizontalAlignment="Left" Margin="540,330,0,0" VerticalAlignment="Top" Width="120"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=NextWordCommand}"/>
         <Label Content="Translation in" HorizontalAlignment="Left" Margin="464,195,0,0" VerticalAlignment="Top" Foreground="Aqua"/>
-        <Label Content="{Binding Path=TranslationLanguage, Mode=OneWay}" HorizontalAlignment="Left" Margin="549,195,0,0" VerticalAlignment="Top" Foreground="Aqua"/>
+        <Label Content="{Binding Path=TranslationLanguage, Mode=OneWay}" HorizontalAlignment="Left" Margin="549,195,0,0" VerticalAlignment="Top" Foreground="Aqua">
+            <Label.ContentTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+            </Label.ContentTemplate>
+        </Label>
         <Label Content="Language" HorizontalAlignment="Left" Margin="634,195,0,0" VerticalAlignment="Top" Foreground="Aqua"/>
         <Button Content="Dictionary" HorizontalAlignment="Left" Margin="656,28,0,0" VerticalAlignment="Top" Width="120"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GoToMainPageCommand}"/>
 

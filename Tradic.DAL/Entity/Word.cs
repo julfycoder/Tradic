@@ -12,8 +12,11 @@ namespace Tradic.DAL.Entity
         [ForeignKey("Translation")]
         public int TranslationId { get; set; }
         public string Text { get; set; }
-        public string Language { get; set; }
 
+        [ForeignKey("Language")]
+        public int LanguageId { get; set; }
+
+        public Language Language { get; set; }
         public Translation Translation { get; set; }
     }
 }

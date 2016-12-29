@@ -27,6 +27,7 @@ namespace Tradic.ViewModel
             this.currentPage = currentPage;
             dataAccess = TradicAccessible.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
+            OriginalLanguages = new ObservableCollection<Language> (dataAccess.GetLanguages());
             Initialize();
             PropertyChanged += UpdateTranslations;
 
@@ -50,9 +51,9 @@ namespace Tradic.ViewModel
         }
         void InitializeProperties()
         {
-            OriginalLanguages = new ObservableCollection<string> { "English", "Russian" };
+            
             SelectedOriginalLanguage = OriginalLanguages.ToList()[0];
-            OriginalWords = new ObservableCollection<Word>(Words.Where(w => w.Language == SelectedOriginalLanguage));
+            OriginalWords = new ObservableCollection<Word>(Words.Where(w => w.LanguageId == SelectedOriginalLanguage.Id));
             TranslationWords = new ObservableCollection<Word>();
         }
 
@@ -66,7 +67,7 @@ namespace Tradic.ViewModel
         void UpdateTranslations(object sender, PropertyChangedEventArgs e)
         {
             if ((e.PropertyName == "SelectedOriginalWord" || e.PropertyName == "SelectedTranslationLanguage") && SelectedTranslationLanguage != null && SelectedOriginalWord != null)
-                TranslationWords = new ObservableCollection<Word>(Words.Where(w => w.Language == SelectedTranslationLanguage && w.TranslationId == SelectedOriginalWord.TranslationId).ToList());
+                TranslationWords = new ObservableCollection<Word>(Words.Where(w => w.LanguageId == SelectedTranslationLanguage.Id && w.TranslationId == SelectedOriginalWord.TranslationId).ToList());
             if (e.PropertyName == "SelectedOriginalLanguage") TranslationWords.Clear();
         }
 
@@ -119,7 +120,7 @@ namespace Tradic.ViewModel
         {
             if (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null && SelectedOriginalWord != null&&TranslationWord!=null&&TranslationWord!="")
             {
-                Word translation = new Word { Text = TranslationWord, Language = SelectedTranslationLanguage, TranslationId = SelectedOriginalWord.TranslationId };
+                Word translation = new Word { Text = TranslationWord, LanguageId = SelectedTranslationLanguage.Id, TranslationId = SelectedOriginalWord.TranslationId };
                 dataAccess.AddEntity(translation);
                 Words.Add(translation);
                 TranslationWords.Add(translation);
@@ -136,14 +137,14 @@ namespace Tradic.ViewModel
 
         #region Properties
 
-        public ObservableCollection<string> OriginalLanguages
+        public ObservableCollection<Language> OriginalLanguages
         {
             get;
             set;
         }
 
-        ObservableCollection<string> _translation_languages;
-        public ObservableCollection<string> TranslationLanguages
+        ObservableCollection<Language> _translation_languages;
+        public ObservableCollection<Language> TranslationLanguages
         {
             get
             {
@@ -184,8 +185,8 @@ namespace Tradic.ViewModel
             }
         }
 
-        string _selected_original_language;
-        public string SelectedOriginalLanguage
+        Language _selected_original_language;
+        public Language SelectedOriginalLanguage
         {
             get
             {
@@ -194,14 +195,14 @@ namespace Tradic.ViewModel
             set
             {
                 _selected_original_language = value;
-                OriginalWords = new ObservableCollection<Word>(dataAccess.GetWords().Where(w => w.Language == SelectedOriginalLanguage));
-                TranslationLanguages = new ObservableCollection<string>(OriginalLanguages.Where(l => l != _selected_original_language));
+                OriginalWords = new ObservableCollection<Word>(dataAccess.GetWords().Where(w => w.LanguageId == SelectedOriginalLanguage.Id));
+                TranslationLanguages = new ObservableCollection<Language>(OriginalLanguages.Where(l => l != _selected_original_language));
                 NotifyPropertyChanged("SelectedOriginalLanguage");
             }
         }
 
-        string _selected_translation_language;
-        public string SelectedTranslationLanguage
+        Language _selected_translation_language;
+        public Language SelectedTranslationLanguage
         {
             get
             {

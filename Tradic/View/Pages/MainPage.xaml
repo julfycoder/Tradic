@@ -24,6 +24,11 @@
                     <TranslateTransform X="19"/>
                 </TransformGroup>
             </ListBox.RenderTransform>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <ListBox x:Name="ListBox2" Height="217" HorizontalAlignment="Left" Width="140" Margin="579,101,95,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" FontWeight="SemiBold" FontSize="16" ItemsSource="{Binding Path=TranslationLanguages, Mode=OneWay}" SelectedItem="{Binding Path=SelectedTranslationLanguage, Mode=TwoWay}" Background="#FF7A72AA" BorderBrush="#FFECA146">
             <ListBox.RenderTransform>
@@ -34,6 +39,11 @@
                     <TranslateTransform X="-19"/>
                 </TransformGroup>
             </ListBox.RenderTransform>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <Button x:Name="RemoveWordButton" Content="Remove word" HorizontalAlignment="Left" Margin="92,344,0,0" VerticalAlignment="Top" Width="148" Height="28" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=RemoveOriginalWordCommand}">
 

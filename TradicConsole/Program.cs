@@ -26,10 +26,23 @@ namespace TradicConsole
             TradicDataAccess access = new TradicDataAccess();
             WordHelper wordHelper = new WordHelper(access);
             TranslationHelper transHelper = new TranslationHelper(access);
+            LanguageHelper langHelper = new LanguageHelper(access);
 
-            //Interview(transHelper, wordHelper);
+            //Interview(transHelper, wordHelper,langHelper);
+            //langHelper.AddEntity(new Language { Name = "English" });
 
-            GetRandomWords(wordHelper);
+            //GetRandomWords(wordHelper);
+
+            TradicContext con = new TradicContext();
+
+            //con.Set<Language>().Add(new Language { Name = "Russian" });
+            //con.SaveChanges();
+
+            IEnumerable<Language> languages = con.Languages;
+            foreach (Language l in languages)
+            {
+                Console.WriteLine(l.Id + ": " + l.Name);
+            }
 
             Console.ReadLine();
         }
@@ -110,7 +123,7 @@ namespace TradicConsole
             }
             return value;
         }
-        static void Interview(TranslationHelper transHelper, WordHelper wordHelper)
+        static void Interview(TranslationHelper transHelper, WordHelper wordHelper,LanguageHelper langHelper)
         {
             while (true)
             {
@@ -120,19 +133,19 @@ namespace TradicConsole
                 {
                     case "A":
                         {
-                            AddNewWord(transHelper, wordHelper);
+                            AddNewWord(transHelper, wordHelper,langHelper);
                         } break;
                     case "B":
                         {
-                            AddTranslationWord(transHelper, wordHelper);
+                            AddTranslationWord(transHelper, wordHelper,langHelper);
                         } break;
                     case "C":
                         {
-                            WatchTranslations(transHelper, wordHelper);
+                            WatchTranslations(transHelper, wordHelper,langHelper);
                         } break;
                     case "D":
                         {
-                            RemoveTranslation(transHelper, wordHelper);
+                            RemoveTranslation(transHelper, wordHelper,langHelper);
                         } break;
                     default: Console.WriteLine("Unrecognized command"); break;
                 }
@@ -147,17 +160,17 @@ namespace TradicConsole
         {
             helper.AddEntity(word);
         }
-        static IEnumerable<Word> GetWordsOfLanguage(WordHelper helper, string language)
+        static IEnumerable<Word> GetWordsOfLanguage(WordHelper helper, Language language)
         {
-            return from g in helper.GetWords() where g.Language == language select g;
+            return from g in helper.GetWords() where g.LanguageId == language.Id select g;
         }
         #region Clauses
-        static void AddNewWord(TranslationHelper transHelper, WordHelper helper)
+        static void AddNewWord(TranslationHelper transHelper, WordHelper helper,LanguageHelper langHelper)
         {
             Console.WriteLine("Choose language:");
             foreach (Languages l in Enum.GetValues(typeof(Languages))) Console.Write(l + ", ");
             Console.WriteLine();
-            string language = Console.ReadLine();
+            Language language = langHelper.GetLanguages().First(l=>l.Name==Console.ReadLine());
 
             Console.WriteLine("Enter word:");
             string word = Console.ReadLine();
@@ -165,21 +178,21 @@ namespace TradicConsole
             Console.WriteLine("Choose translation language:");
             foreach (Languages l in Enum.GetValues(typeof(Languages))) Console.Write(l + ", ");
             Console.WriteLine();
-            string translationLanguage = Console.ReadLine();
+            Language translationLanguage = langHelper.GetLanguages().First(l => l.Name == Console.ReadLine());
 
             Console.WriteLine("Enter translation word:");
             string translationWord = Console.ReadLine();
 
             Translation trans = AddNewTranslation(transHelper);
-            AddWord(helper, new Word { Text = word, Language = language, TranslationId = trans.Id });
-            AddWord(helper, new Word { Text = translationWord, Language = translationLanguage, TranslationId = trans.Id });
+            AddWord(helper, new Word { Text = word, LanguageId = language.Id, TranslationId = trans.Id });
+            AddWord(helper, new Word { Text = translationWord, LanguageId = translationLanguage.Id, TranslationId = trans.Id });
         }
-        static void AddTranslationWord(TranslationHelper transHelper, WordHelper helper)
+        static void AddTranslationWord(TranslationHelper transHelper, WordHelper helper,LanguageHelper langHelper)
         {
             Console.WriteLine("Choose language:");
             foreach (Languages l in Enum.GetValues(typeof(Languages))) Console.Write(l + ", ");
             Console.WriteLine();
-            string language = Console.ReadLine();
+            Language language = langHelper.GetLanguages().First(l => l.Name == Console.ReadLine());
 
             IEnumerable<Word> words = GetWordsOfLanguage(helper, language);
             Console.WriteLine("Choose original word:");
@@ -193,19 +206,20 @@ namespace TradicConsole
             Console.WriteLine("Choose translation language:");
             foreach (Languages l in Enum.GetValues(typeof(Languages))) Console.Write(l + ", ");
             Console.WriteLine();
-            string translationLanguage = Console.ReadLine();
+            Language translationLanguage = langHelper.GetLanguages().First(l => l.Name == Console.ReadLine());
+
 
             Console.WriteLine("Enter translation word:");
             string translationWord = Console.ReadLine();
 
             AddWord(helper, new Word { Text = translationWord, Language = translationLanguage, TranslationId = originalWord.TranslationId });
         }
-        static void WatchTranslations(TranslationHelper transHelper, WordHelper helper)
+        static void WatchTranslations(TranslationHelper transHelper, WordHelper helper, LanguageHelper langHelper)
         {
             Console.WriteLine("Choose language:");
             foreach (Languages l in Enum.GetValues(typeof(Languages))) Console.Write(l + ", ");
             Console.WriteLine();
-            string language = Console.ReadLine();
+            Language language = langHelper.GetLanguages().First(l => l.Name == Console.ReadLine());
 
             IEnumerable<Word> words = GetWordsOfLanguage(helper, language);
             Console.WriteLine("Choose original word:");
@@ -219,18 +233,19 @@ namespace TradicConsole
             Console.WriteLine("Choose translation language:");
             foreach (Languages l in Enum.GetValues(typeof(Languages))) Console.Write(l + ", ");
             Console.WriteLine();
-            string translationLanguage = Console.ReadLine();
+            Language translationLanguage = langHelper.GetLanguages().First(l => l.Name == Console.ReadLine());
+
 
             IEnumerable<Word> translations = from t in GetWordsOfLanguage(helper, translationLanguage) where t.TranslationId==originalWord.TranslationId select t;
 
             foreach (Word translation in translations) Console.WriteLine(translation.Text);
         }
-        static void RemoveTranslation(TranslationHelper transHelper, WordHelper helper)
+        static void RemoveTranslation(TranslationHelper transHelper, WordHelper helper, LanguageHelper langHelper)
         {
             Console.WriteLine("Choose language:");
             foreach (Languages l in Enum.GetValues(typeof(Languages))) Console.Write(l + ", ");
             Console.WriteLine();
-            string language = Console.ReadLine();
+            Language language = langHelper.GetLanguages().First(l => l.Name == Console.ReadLine());
 
             IEnumerable<Word> words = GetWordsOfLanguage(helper, language);
             Console.WriteLine("Choose removable word:");

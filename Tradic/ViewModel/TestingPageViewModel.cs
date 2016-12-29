@@ -22,12 +22,14 @@ namespace Tradic.ViewModel
         Page currentPage;
         ObservableCollection<Word> Words;
         Word takenWord;
+        IEnumerable<Language> languages;
         public TestingPageViewModel(Page currentPage)
         {
             this.currentPage = currentPage;
             dataAccess = TradicAccessible.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
-            takenWord = Words[Selection.GetIndexByMRAlgo(Words.Count)];
+            
+            languages = dataAccess.GetLanguages();
             Initialize();
         }
 
@@ -37,18 +39,44 @@ namespace Tradic.ViewModel
         {
             InitializeCommands();
             InitializeProperties();
+            GenerateTestWord();
         }
         void InitializeCommands()
         {
             GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
+            NextWordCommand = new Command(arg => NextWord());
         }
         void InitializeProperties()
         {
-            OriginalWord = takenWord.Text;
-            TranslationLanguage=
+            
         }
 
         #endregion
+
+        void GenerateTestWord()
+        {
+            TranslationLanguage = null;
+            while (TranslationLanguage == null)
+            {
+                takenWord = Words[Selection.GetIndexByMRAlgo(Words.Count)];
+                OriginalWord = takenWord.Text;
+
+                if (Words.Where(w => w.TranslationId == takenWord.TranslationId && w.Id != takenWord.Id) != null)
+                {
+                    IEnumerable<Word> sameTranslationWords = Words.Where(w => w.TranslationId == takenWord.TranslationId && w.Id != takenWord.Id);
+                    List<Language> sameTranslationWordsLanguages = new List<Language>();
+
+                    foreach (Word w in sameTranslationWords)
+                    {
+                        if (!sameTranslationWordsLanguages.Contains(languages.First(l => l.Id == w.LanguageId)))
+                            sameTranslationWordsLanguages.Add(languages.First(l => l.Id == w.LanguageId));
+                    }
+                    if (sameTranslationWordsLanguages.Count > 0)
+                        TranslationLanguage = sameTranslationWordsLanguages[Selection.GetRandom(sameTranslationWordsLanguages.Count - 1)];
+                    else TranslationLanguage = sameTranslationWordsLanguages[0];
+                }
+            }
+        }
 
         #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -65,6 +93,11 @@ namespace Tradic.ViewModel
         {
             currentPage.NavigationService.Navigate(new MainPage());
         }
+        public ICommand NextWordCommand { get; set; }
+        void NextWord()
+        {
+            GenerateTestWord();
+        }
 
         #endregion
 
@@ -80,7 +113,7 @@ namespace Tradic.ViewModel
             set
             {
                 _original_word = value;
-                NotifyPropertyChanged("OrignalWord");
+                NotifyPropertyChanged("OriginalWord");
             }
         }
 
@@ -98,8 +131,8 @@ namespace Tradic.ViewModel
             }
         }
 
-        string _translation_language;
-        public string TranslationLanguage
+        Language _translation_language;
+        public Language TranslationLanguage
         {
             get
             {
