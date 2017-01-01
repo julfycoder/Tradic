@@ -4,24 +4,26 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="515"  d:DesignWidth="814" ShowsNavigationUI="False" Background="#FF107095" Height="515" Width="814"
+      d:DesignHeight="515"  d:DesignWidth="814" ShowsNavigationUI="False" Background="#FF931313" Height="515" Width="814"
 	Title="TestingPage">
 
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="113,241,0,0" TextWrapping="Wrap" Text="{Binding Path=OriginalWord, Mode=OneWay}" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="540,241,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Apply" HorizontalAlignment="Left" Margin="540,293,0,0" VerticalAlignment="Top" Width="120"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" />
-        <Button Content="Next" HorizontalAlignment="Left" Margin="540,330,0,0" VerticalAlignment="Top" Width="120"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=NextWordCommand}"/>
-        <Label Content="Translation in" HorizontalAlignment="Left" Margin="464,195,0,0" VerticalAlignment="Top" Foreground="Aqua"/>
-        <Label Content="{Binding Path=TranslationLanguage, Mode=OneWay}" HorizontalAlignment="Left" Margin="549,195,0,0" VerticalAlignment="Top" Foreground="Aqua">
+        <TextBox HorizontalAlignment="Left" Height="36" Margin="113,241,0,0" TextWrapping="Wrap" Text="{Binding Path=OriginalWord, Mode=OneWay}" VerticalAlignment="Top" Width="166" IsReadOnly="True" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
+        </TextBox>
+        <TextBox HorizontalAlignment="Left" Height="36" Margin="364,241,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=TwoWay}" VerticalAlignment="Top" Width="149" Foreground="#FFE48484" FontSize="18" FontWeight="Bold"/>
+        <Button Content="Apply" HorizontalAlignment="Left" Margin="586,241,0,0" VerticalAlignment="Top" Width="149"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=ApplyCommand}" Height="36" FontSize="16"/>
+        <Button Content="Next" HorizontalAlignment="Left" Margin="321,315,0,0" VerticalAlignment="Top" Width="226"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GenerateTestCommand}" Height="45" FontSize="16"/>
+        <Label Content="Translate in" HorizontalAlignment="Left" Margin="363,124,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
+        <Label Content="{Binding Path=TranslationLanguage, Mode=OneWay}" HorizontalAlignment="Left" Margin="363,163,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold" RenderTransformOrigin="-11.5,0.529">
             <Label.ContentTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=Name}"/>
                 </DataTemplate>
             </Label.ContentTemplate>
         </Label>
-        <Label Content="Language" HorizontalAlignment="Left" Margin="634,195,0,0" VerticalAlignment="Top" Foreground="Aqua"/>
-        <Button Content="Dictionary" HorizontalAlignment="Left" Margin="656,28,0,0" VerticalAlignment="Top" Width="120"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GoToMainPageCommand}"/>
+        <Label Content="Language" HorizontalAlignment="Left" Margin="363,202,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
+        <Button Content="Dictionary" HorizontalAlignment="Left" Margin="679,10,0,0" VerticalAlignment="Top" Width="125" Height="46"  Background="Orange" Foreground="Yellow" FontWeight="Bold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GoToMainPageCommand}" FontSize="18"/>
+        <Label Content="Translation test to improve your knowledge" HorizontalAlignment="Left" Margin="158,57,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="#FFC7BE00"/>
 
     </Grid>
 </Page>

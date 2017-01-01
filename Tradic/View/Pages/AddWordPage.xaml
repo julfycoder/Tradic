@@ -4,32 +4,32 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="515"  d:DesignWidth="814" ShowsNavigationUI="False" Background="#FF107095"
+      d:DesignHeight="515"  d:DesignWidth="814" ShowsNavigationUI="False" Background="#FF931313"
 	Title="AddWordPage">
 
-    <Grid>
-        <Label Content="Original" HorizontalAlignment="Left" Margin="128,93,0,0" VerticalAlignment="Top" Foreground="#FFF1F592"/>
-        <Label Content="Translation" HorizontalAlignment="Left" Margin="566,93,0,0" VerticalAlignment="Top" Foreground="#FFF1F592"/>
-        <Label Content="Word" HorizontalAlignment="Left" Margin="566,229,0,0" VerticalAlignment="Top" Foreground="#FFF1F592"/>
-        <Label Content="Word" HorizontalAlignment="Left" Margin="128,229,0,0" VerticalAlignment="Top" Foreground="#FFF1F592"/>
-        <TextBox x:Name="OrigianlWordBox" HorizontalAlignment="Left" Margin="116,260,0,232" TextWrapping="Wrap" Width="120" Height="23" Text="{Binding Path=OriginalWordText, Mode=TwoWay}"/>
-        <TextBox x:Name="TranslationWordsBox" HorizontalAlignment="Left" Height="23" Margin="549,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="{Binding Path=TranslationWordText, Mode=TwoWay}"/>
-        <ListBox x:Name="OriginalLanguagesBox" HorizontalAlignment="Left" Height="70" Margin="116,124,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding Path=OriginalLanguages, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedOriginalLanguage, Mode=TwoWay}">
+    <Grid HorizontalAlignment="Left" Width="814">
+        <Label Content="Original language" HorizontalAlignment="Left" Margin="116,93,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
+        <Label Content="Translation language" HorizontalAlignment="Left" Margin="549,93,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
+        <Label Content="Translation word" HorizontalAlignment="Left" Margin="549,229,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
+        <Label Content="Original word" HorizontalAlignment="Left" Margin="116,229,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
+        <TextBox x:Name="OrigianlWordBox" HorizontalAlignment="Left" Margin="116,260,0,220" TextWrapping="Wrap" Width="161" Text="{Binding Path=OriginalWordText, Mode=TwoWay}" Foreground="#FFE48484" FontSize="18" FontWeight="Bold"/>
+        <TextBox x:Name="TranslationWordsBox" HorizontalAlignment="Left" Height="35" Margin="549,260,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="187" Text="{Binding Path=TranslationWordText, Mode=TwoWay}" Foreground="#FFE48484" FontSize="18" FontWeight="Bold"/>
+        <ListBox x:Name="OriginalLanguagesBox" HorizontalAlignment="Left" Height="87" Margin="116,124,0,0" VerticalAlignment="Top" Width="161" ItemsSource="{Binding Path=OriginalLanguages, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedOriginalLanguage, Mode=TwoWay}" FontSize="18" Foreground="#FFE48484" FontWeight="Bold">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=Name}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox x:Name="TranslationLanguagesBox" Height="70" Margin="549,124,145,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding Path=TranslationLanguages, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedTranslationLanguage, Mode=TwoWay}">
+        <ListBox x:Name="TranslationLanguagesBox" Height="87" Margin="549,124,78,0" VerticalAlignment="Top" ItemsSource="{Binding Path=TranslationLanguages, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedTranslationLanguage, Mode=TwoWay}" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=Name}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button x:Name="WatchButton" Content="Dictionary" HorizontalAlignment="Left" Margin="32,30,0,0" VerticalAlignment="Top" Width="148" Height="28" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GoToMainPageCommand}"/>
-        <Button Content="Add Word" HorizontalAlignment="Left" Margin="269,351,0,0" VerticalAlignment="Top" Width="75"  Height="28" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=AddNewWordCommand}"/>
+        <Button x:Name="WatchButton" Content="Dictionary" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="157" Height="50" Background="Orange" Foreground="Yellow" FontWeight="Bold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GoToMainPageCommand}" FontSize="18"/>
+        <Button Content="Add Word" HorizontalAlignment="Left" Margin="305,349,0,0" VerticalAlignment="Top" Width="200"  Height="47" Background="#FF0FC96C" Foreground="Yellow" FontWeight="Bold" BorderBrush="#FF0FC96C" Cursor="Hand" Command="{Binding Path=AddNewWordCommand}" FontSize="16"/>
 
     </Grid>
 </Page>

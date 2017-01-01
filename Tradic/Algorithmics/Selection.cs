@@ -9,9 +9,9 @@ namespace Tradic.Algorithmics
 {
     static class Selection
     {
+        static Random rnd = new Random();
         public static int GetIndexByMRAlgo(int N)
         {
-            Random rnd = new Random();
             int delay = 150;
             Thread.Sleep(delay);
             double r1 = (double)rnd.Next(0, N + 1);
@@ -22,12 +22,10 @@ namespace Tradic.Algorithmics
         }
         public static int GetRandom(int max)
         {
-            Random rnd = new Random();
             return rnd.Next(max);
         }
         public static int GetRandom(int min, int max)
         {
-            Random rnd = new Random();
             return rnd.Next(min, max);
         }
     }

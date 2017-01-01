@@ -23,15 +23,12 @@ namespace Tradic.ViewModel
 
         public MainViewModel(Page currentPage)
         {
-           
             this.currentPage = currentPage;
             dataAccess = TradicAccessible.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
             OriginalLanguages = new ObservableCollection<Language> (dataAccess.GetLanguages());
             Initialize();
             PropertyChanged += UpdateTranslations;
-
-            
         }
 
         #region Initialization
@@ -51,7 +48,6 @@ namespace Tradic.ViewModel
         }
         void InitializeProperties()
         {
-            
             SelectedOriginalLanguage = OriginalLanguages.ToList()[0];
             OriginalWords = new ObservableCollection<Word>(Words.Where(w => w.LanguageId == SelectedOriginalLanguage.Id));
             TranslationWords = new ObservableCollection<Word>();
@@ -118,12 +114,14 @@ namespace Tradic.ViewModel
         public ICommand AddNewTranslationCommand { get; set; }
         void AddNewTranslation()
         {
-            if (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null && SelectedOriginalWord != null&&TranslationWord!=null&&TranslationWord!="")
+            if (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null && SelectedOriginalWord != null && TranslationWord != null && TranslationWord != "")
             {
                 Word translation = new Word { Text = TranslationWord, LanguageId = SelectedTranslationLanguage.Id, TranslationId = SelectedOriginalWord.TranslationId };
                 dataAccess.AddEntity(translation);
-                Words.Add(translation);
-                TranslationWords.Add(translation);
+                Word addedTranslation = dataAccess.GetWords().First(w => w.LanguageId == translation.LanguageId && w.TranslationId == translation.TranslationId && w.Text == translation.Text);
+                Words.Add(addedTranslation);
+                TranslationWords.Add(addedTranslation);
+                TranslationWord = "";
             }
         }
 

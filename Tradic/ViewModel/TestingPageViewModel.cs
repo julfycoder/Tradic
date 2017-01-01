@@ -13,6 +13,7 @@ using Tradic.Model;
 using Tradic.Commands;
 using Tradic.View.Pages;
 using Tradic.Algorithmics;
+using System.Windows;
 
 namespace Tradic.ViewModel
 {
@@ -21,14 +22,14 @@ namespace Tradic.ViewModel
         IAccessible dataAccess;
         Page currentPage;
         ObservableCollection<Word> Words;
-        Word takenWord;
+        Word originalWord;
+        IEnumerable<Word> translationWords;
         IEnumerable<Language> languages;
         public TestingPageViewModel(Page currentPage)
         {
             this.currentPage = currentPage;
             dataAccess = TradicAccessible.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
-            
             languages = dataAccess.GetLanguages();
             Initialize();
         }
@@ -39,12 +40,13 @@ namespace Tradic.ViewModel
         {
             InitializeCommands();
             InitializeProperties();
-            GenerateTestWord();
+            GenerateTestPair();
         }
         void InitializeCommands()
         {
             GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
-            NextWordCommand = new Command(arg => NextWord());
+            GenerateTestCommand = new Command(arg => GenerateTest());
+            ApplyCommand = new Command(arg => Apply());
         }
         void InitializeProperties()
         {
@@ -53,30 +55,41 @@ namespace Tradic.ViewModel
 
         #endregion
 
-        void GenerateTestWord()
+        #region TestGenerating
+
+        void GenerateTestPair()
         {
-            TranslationLanguage = null;
-            while (TranslationLanguage == null)
+            originalWord = null;
+            translationWords = null;
+            
+            while (translationWords == null)
             {
-                takenWord = Words[Selection.GetIndexByMRAlgo(Words.Count)];
-                OriginalWord = takenWord.Text;
-
-                if (Words.Where(w => w.TranslationId == takenWord.TranslationId && w.Id != takenWord.Id) != null)
-                {
-                    IEnumerable<Word> sameTranslationWords = Words.Where(w => w.TranslationId == takenWord.TranslationId && w.Id != takenWord.Id);
-                    List<Language> sameTranslationWordsLanguages = new List<Language>();
-
-                    foreach (Word w in sameTranslationWords)
-                    {
-                        if (!sameTranslationWordsLanguages.Contains(languages.First(l => l.Id == w.LanguageId)))
-                            sameTranslationWordsLanguages.Add(languages.First(l => l.Id == w.LanguageId));
-                    }
-                    if (sameTranslationWordsLanguages.Count > 0)
-                        TranslationLanguage = sameTranslationWordsLanguages[Selection.GetRandom(sameTranslationWordsLanguages.Count - 1)];
-                    else TranslationLanguage = sameTranslationWordsLanguages[0];
-                }
+                originalWord = GenerateOriginalWord();
+                translationWords = GenerateTranslationWords(originalWord);
             }
+
+            OriginalWord = originalWord.Text;
+            TranslationLanguage = languages.First(l => l.Id == translationWords.ToList()[0].LanguageId);
         }
+        Word GenerateOriginalWord()
+        {
+            return Words[Selection.GetIndexByMRAlgo(Words.Count)];
+        }
+        IEnumerable<Word> GenerateTranslationWords(Word originalWord)
+        {
+            Word translationWord = null;
+            IEnumerable<Word> translationWords = Words.Where(w => w.TranslationId == originalWord.TranslationId && w.Id != originalWord.Id && w.LanguageId != originalWord.LanguageId);
+            Language language = languages.First(l => l.Id == translationWords.ToList()[Selection.GetRandom(translationWords.Count() - 1)].LanguageId);
+            translationWords = translationWords.Where(w => w.LanguageId == language.Id);
+
+            if (translationWords != null)
+            {
+                translationWord = translationWords.ToList()[Selection.GetRandom(translationWords.Count() - 1)];
+            }
+            return translationWords;
+        }
+
+        #endregion
 
         #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -93,10 +106,20 @@ namespace Tradic.ViewModel
         {
             currentPage.NavigationService.Navigate(new MainPage());
         }
-        public ICommand NextWordCommand { get; set; }
-        void NextWord()
+        public ICommand GenerateTestCommand { get; set; }
+        void GenerateTest()
         {
-            GenerateTestWord();
+            GenerateTestPair();
+            TranslationWord = "";
+        }
+        public ICommand ApplyCommand { get; set; }
+        void Apply()
+        {
+            if (translationWords.Any(w => w.Text.ToLower() == TranslationWord.ToLower()))
+            {
+                GenerateTest();
+            }
+            else MessageBox.Show("Your translation is incorrect!", "Incorrect translation", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         #endregion
