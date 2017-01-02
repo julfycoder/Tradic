@@ -59,7 +59,11 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Button x:Name="RemoveTranslationButton_Copy" Content="Add translation" HorizontalAlignment="Left" Margin="579,353,0,134" Width="160" Height="28" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=AddNewTranslationCommand}" FontSize="14"/>
-        <TextBox HorizontalAlignment="Left" Height="49" Margin="579,386,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=TwoWay}" VerticalAlignment="Top" Width="160" FontSize="18" Foreground="#FF242E93" FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Height="49" Margin="579,386,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="160" FontSize="18" Foreground="#FF242E93" FontWeight="Bold">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding Path=AddNewTranslationCommand}"></KeyBinding>
+            </TextBox.InputBindings>
+        </TextBox>
         <Button x:Name="AddButton_Copy" Content="Testing" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="145" Height="46" Foreground="Yellow" FontWeight="Bold" BorderBrush="#FF8ED45D" Cursor="Hand" Background="#FF8ED45D" Command="{Binding Path=GoToTestingPageCommand}" FontSize="18" RenderTransformOrigin="0.5,0.5">
         </Button>
 

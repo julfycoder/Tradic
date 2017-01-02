@@ -11,6 +11,7 @@ using Tradic.Commands;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using Tradic.View.Pages;
+using System.Windows;
 
 namespace Tradic.ViewModel
 {
@@ -26,7 +27,7 @@ namespace Tradic.ViewModel
             this.currentPage = currentPage;
             dataAccess = TradicAccessible.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
-            OriginalLanguages = new ObservableCollection<Language> (dataAccess.GetLanguages());
+            OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
             Initialize();
             PropertyChanged += UpdateTranslations;
         }
@@ -90,6 +91,7 @@ namespace Tradic.ViewModel
                 Words.Remove(Words.First(w => w.Id == SelectedTranslationWord.Id));
                 TranslationWords.Remove(SelectedTranslationWord);
             }
+            else MessageBox.Show("You must select translation", "Selection warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         public ICommand RemoveOriginalWordCommand { get; set; }
@@ -109,6 +111,7 @@ namespace Tradic.ViewModel
                 OriginalWords.Remove(SelectedOriginalWord);
                 TranslationWords.Clear();
             }
+            else MessageBox.Show("You must select original word", "Selection warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         public ICommand AddNewTranslationCommand { get; set; }
@@ -123,6 +126,10 @@ namespace Tradic.ViewModel
                 TranslationWords.Add(addedTranslation);
                 TranslationWord = "";
             }
+            else if (SelectedOriginalLanguage == null) MessageBox.Show("You must select original language", "Language warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (SelectedTranslationLanguage == null) MessageBox.Show("You must select translation language", "Language warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (SelectedOriginalWord == null) MessageBox.Show("You must select original word", "Selection warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (TranslationWord == null || TranslationWord == "") MessageBox.Show("You must enter translation", "Translation warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         public ICommand GoToTestingPageCommand { get; set; }
@@ -160,10 +167,7 @@ namespace Tradic.ViewModel
         {
             get
             {
-                foreach (Word w in _original_words)
-                {
-                    w.Text = w.Text.ToUpperInvariant();
-                }
+                foreach (Word w in _original_words) w.Text = w.Text.ToUpperInvariant();
                 return _original_words;
             }
             set
@@ -178,9 +182,10 @@ namespace Tradic.ViewModel
         {
             get
             {
+                foreach (Word w in _translation_words) w.Text = w.Text.ToUpperInvariant();
                 return _translation_words;
             }
-            set 
+            set
             {
                 _translation_words = value;
                 NotifyPropertyChanged("TranslationWords");
@@ -210,7 +215,7 @@ namespace Tradic.ViewModel
             {
                 return _selected_translation_language;
             }
-            set 
+            set
             {
                 _selected_translation_language = value;
                 NotifyPropertyChanged("SelectedTranslationLanguage");
@@ -237,10 +242,19 @@ namespace Tradic.ViewModel
             set;
         }
 
+        string _translation_word;
         public string TranslationWord
         {
-            get;
-            set;
+            get
+            {
+                return _translation_word;
+            }
+            set
+            {
+                _translation_word = value;
+                if (_translation_word == " ") _translation_word = "";
+                NotifyPropertyChanged("TranslationWord");
+            }
         }
 
         #endregion

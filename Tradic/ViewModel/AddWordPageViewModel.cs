@@ -12,6 +12,7 @@ using Tradic.View.Pages;
 using Tradic.Commands;
 using Tradic.Model;
 using Tradic.Model.Entity;
+using System.Windows;
 
 
 namespace Tradic.ViewModel
@@ -63,7 +64,9 @@ namespace Tradic.ViewModel
         public ICommand AddNewWordCommand { get; set; }
         void AddNewWord()
         {
-            if (OriginalWordText != null && TranslationWordText != null && (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null))
+            if ((OriginalWordText != null && OriginalWordText != "") &&
+                (TranslationWordText != null && TranslationWordText != "") &&
+                (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null))
             {
                 dataAccess.AddEntity(new Translation());
                 Translation translation = dataAccess.GetTranslations().Last();
@@ -73,6 +76,8 @@ namespace Tradic.ViewModel
                 OriginalWordText = "";
                 TranslationWordText = "";
             }
+            else if (OriginalWordText == "" || OriginalWordText == null) MessageBox.Show("You must enter original word", "Enter warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (TranslationWordText == "" || TranslationWordText == null) MessageBox.Show("You mus enter translation word", "Enter warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         #endregion
@@ -149,6 +154,7 @@ namespace Tradic.ViewModel
             set 
             {
                 _original_word_text = value;
+                if (_original_word_text == " ") _original_word_text = "";
                 NotifyPropertyChanged("OriginalWordText");
             }
         }
@@ -163,6 +169,7 @@ namespace Tradic.ViewModel
             set
             {
                 _translation_word_text = value;
+                if (_translation_word_text == " ") _translation_word_text = "";
                 NotifyPropertyChanged("TranslationWordText");
             }
         }
