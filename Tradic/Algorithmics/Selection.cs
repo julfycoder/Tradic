@@ -10,6 +10,11 @@ namespace Tradic.Algorithmics
     static class Selection
     {
         static Random rnd = new Random();
+        /// <summary>
+        /// MR - most recent. This method gives upper priority to recent words.
+        /// </summary>
+        /// <param name="N"></param>
+        /// <returns></returns>
         public static int GetIndexByMRAlgo(int N)
         {
             int delay = 150;

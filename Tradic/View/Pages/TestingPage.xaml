@@ -10,7 +10,11 @@
     <Grid>
         <TextBox HorizontalAlignment="Left" Height="36" Margin="113,241,0,0" TextWrapping="Wrap" Text="{Binding Path=OriginalWord, Mode=OneWay}" VerticalAlignment="Top" Width="166" IsReadOnly="True" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
         </TextBox>
-        <TextBox HorizontalAlignment="Left" Height="36" Margin="364,241,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=TwoWay}" VerticalAlignment="Top" Width="149" Foreground="#FFE48484" FontSize="18" FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Height="36" Margin="364,241,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="149" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding Path=ApplyCommand}"/>
+            </TextBox.InputBindings>
+        </TextBox>
         <Button Content="Apply" HorizontalAlignment="Left" Margin="586,241,0,0" VerticalAlignment="Top" Width="149"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=ApplyCommand}" Height="36" FontSize="16"/>
         <Button Content="Next" HorizontalAlignment="Left" Margin="321,315,0,0" VerticalAlignment="Top" Width="226"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GenerateTestCommand}" Height="45" FontSize="16"/>
         <Label Content="Translate in" HorizontalAlignment="Left" Margin="363,124,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>

@@ -131,7 +131,7 @@ namespace Tradic.ViewModel
         {
             get
             {
-                return _original_word;
+                return _original_word.ToUpperInvariant();
             }
             set
             {

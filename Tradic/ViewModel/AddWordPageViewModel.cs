@@ -20,18 +20,37 @@ namespace Tradic.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         IAccessible dataAccess;
+        Page currentPage;
         public AddWordPageViewModel(Page currentPage)
         {
+            this.currentPage = currentPage;
             dataAccess = TradicAccessible.GetInstance();
-            OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
-            GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
-            AddNewWordCommand = new Command(arg => AddNewWord());
+            Initialize();
         }
 
         void NotifyPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #region Initialize
+
+        void Initialize()
+        {
+            InitializeCommands();
+            InitializeProperties();
+        }
+        void InitializeCommands()
+        {
+            GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
+            AddNewWordCommand = new Command(arg => AddNewWord());
+        }
+        void InitializeProperties()
+        {
+            OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
+        }
+
+        #endregion
 
         #region Commands
 

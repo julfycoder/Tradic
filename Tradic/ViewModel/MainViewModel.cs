@@ -160,6 +160,10 @@ namespace Tradic.ViewModel
         {
             get
             {
+                foreach (Word w in _original_words)
+                {
+                    w.Text = w.Text.ToUpperInvariant();
+                }
                 return _original_words;
             }
             set
