@@ -14,6 +14,8 @@ namespace Tradic.Model
         void AddEntity(Language language);
         void AddEntity(Description description);
 
+        void ChangeEntity(Description description);
+
         void RemoveEntity(Word word);
         void RemoveEntity(Translation translation);
         void RemoveEntity(Language language);

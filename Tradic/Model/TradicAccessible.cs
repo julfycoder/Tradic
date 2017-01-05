@@ -42,6 +42,20 @@ namespace Tradic.Model
 
         #endregion
 
+        #region ChangeEntity
+
+        public void ChangeEntity(Entity.Description description)
+        {
+            descriptionHelper.ChangeEntity(new DAL.Entity.Description
+            {
+                Id = description.Id,
+                Text = description.Text,
+                WordId = description.WordId
+            });
+        }
+
+        #endregion
+
         #region RemoveEntity
 
         public void RemoveEntity(Entity.Word word)
