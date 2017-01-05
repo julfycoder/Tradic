@@ -54,6 +54,18 @@ namespace Tradic.Model
             });
         }
 
+        public void ChangeEntity(Entity.Word word)
+        {
+            wordHelper.ChangeEntity(new DAL.Entity.Word
+            {
+                Id = word.Id,
+                LanguageId = word.LanguageId,
+                Text = word.Text,
+                Priority = word.Priority,
+                TranslationId = word.TranslationId,
+            });
+        }
+
         #endregion
 
         #region RemoveEntity

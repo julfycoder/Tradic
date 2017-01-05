@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tradic.DAL.Entity
 {
-    public class Word:Entity
+    public class Word : Entity
     {
         [ForeignKey("Translation")]
         public int TranslationId { get; set; }
@@ -19,17 +19,6 @@ namespace Tradic.DAL.Entity
         public Language Language { get; set; }
         public Translation Translation { get; set; }
 
-        int _priority;
-        public int Priority
-        {
-            get
-            {
-                return _priority;
-            }
-            set
-            {
-                if (value >= 0) _priority = value;
-            }
-        }
+        public int Priority { get; set; }
     }
 }
