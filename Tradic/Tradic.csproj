@@ -87,6 +87,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Model\Entity\Description.cs" />
     <Compile Include="Model\Entity\Entity.cs" />
     <Compile Include="Model\Entity\Language.cs" />
     <Compile Include="Model\Entity\Translation.cs" />

@@ -16,5 +16,6 @@ namespace Tradic.DAL
         public DbSet<Translation> Translations { get; set; }
         public DbSet<Word> Words { get; set; }
         public DbSet<Language> Languages { get; set; }
+        public DbSet<Description> Descriptions { get; set; }
     }
 }

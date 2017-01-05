@@ -119,11 +119,11 @@ namespace Tradic.ViewModel
         {
             if (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null && SelectedOriginalWord != null && TranslationWord != null && TranslationWord != "")
             {
-                Word translation = new Word { Text = TranslationWord, LanguageId = SelectedTranslationLanguage.Id, TranslationId = SelectedOriginalWord.TranslationId };
+                Word lastWord = dataAccess.GetWords().Last();
+                Word translation = new Word {Id=lastWord.Id+1, Text = TranslationWord, LanguageId = SelectedTranslationLanguage.Id, TranslationId = SelectedOriginalWord.TranslationId };
                 dataAccess.AddEntity(translation);
-                Word addedTranslation = dataAccess.GetWords().First(w => w.LanguageId == translation.LanguageId && w.TranslationId == translation.TranslationId && w.Text == translation.Text);
-                Words.Add(addedTranslation);
-                TranslationWords.Add(addedTranslation);
+                Words.Add(translation);
+                TranslationWords.Add(translation);
                 TranslationWord = "";
             }
             else if (SelectedOriginalLanguage == null) MessageBox.Show("You must select original language", "Language warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -167,7 +167,7 @@ namespace Tradic.ViewModel
         {
             get
             {
-                foreach (Word w in _original_words) w.Text = w.Text.ToUpperInvariant();
+                //foreach (Word w in _original_words) w.Text = w.Text.ToUpperInvariant();
                 return _original_words;
             }
             set
@@ -182,7 +182,7 @@ namespace Tradic.ViewModel
         {
             get
             {
-                foreach (Word w in _translation_words) w.Text = w.Text.ToUpperInvariant();
+                //foreach (Word w in _translation_words) w.Text = w.Text.ToUpperInvariant();
                 return _translation_words;
             }
             set

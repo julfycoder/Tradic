@@ -1,0 +1,9 @@
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.Business\bin\Release\Tradic.Business.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.Business\bin\Release\Tradic.Business.pdb
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.Business\bin\Release\Tradic.DAL.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.Business\bin\Release\EntityFramework.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.Business\bin\Release\Tradic.DAL.pdb
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.Business\bin\Release\EntityFramework.xml
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.Business\obj\Release\Tradic.Business.csprojResolveAssemblyReference.cache
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.Business\obj\Release\Tradic.Business.dll
+D:\Windows.old.001\Users\Bogdan\Documents\Visual Studio 2015\Tradic\Tradic.Business\obj\Release\Tradic.Business.pdb

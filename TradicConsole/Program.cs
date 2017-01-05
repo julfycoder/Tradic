@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tradic.Business;
+using Tradic.Business.Helper;
 using Tradic.DAL;
 using Tradic.DAL.Entity;
 using System.Threading;
@@ -23,7 +23,7 @@ namespace TradicConsole
         {
             Console.InputEncoding = Encoding.GetEncoding(1251);
             Console.OutputEncoding = Encoding.GetEncoding(1251);
-            TradicDataAccess access = new TradicDataAccess();
+            TradicDataAccess access = TradicDataAccess.GetInstance();
             WordHelper wordHelper = new WordHelper(access);
             TranslationHelper transHelper = new TranslationHelper(access);
             LanguageHelper langHelper = new LanguageHelper(access);

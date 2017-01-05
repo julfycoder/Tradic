@@ -74,6 +74,7 @@ namespace Tradic.ViewModel
         Word GenerateOriginalWord()
         {
             return Words[Selection.GetIndexByMRAlgo(Words.Count)];
+            //return Words[Selection.GetRandom(Words.Count)];
         }
         IEnumerable<Word> GenerateTranslationWords(Word originalWord)
         {
@@ -131,7 +132,7 @@ namespace Tradic.ViewModel
         {
             get
             {
-                return _original_word.ToUpperInvariant();
+                return _original_word;//.ToUpperInvariant();
             }
             set
             {

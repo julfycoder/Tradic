@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tradic.Business;
+using Tradic.Business.Helper;
 using Tradic.DAL;
 
 namespace Tradic.Model
@@ -13,9 +13,12 @@ namespace Tradic.Model
         static ITranslationHelper transHelper;
         static IWordHelper wordHelper;
         static ILanguageHelper languageHelper;
+        static IDescriptionHelper descriptionHelper;
         static IAccessible CurrentInstance;
 
         protected TradicAccessible() { }
+
+        #region AddEntity
 
         public void AddEntity(Entity.Word word)
         {
@@ -32,6 +35,15 @@ namespace Tradic.Model
             languageHelper.AddEntity(new DAL.Entity.Language { Name = language.Name });
         }
 
+        public void AddEntity(Entity.Description description)
+        {
+            descriptionHelper.AddEntity(new DAL.Entity.Description { Text = description.Text, WordId = description.WordId });
+        }
+
+        #endregion
+
+        #region RemoveEntity
+
         public void RemoveEntity(Entity.Word word)
         {
             wordHelper.RemoveEntity(wordHelper.GetWords().First(w => w.Id == word.Id));
@@ -46,6 +58,15 @@ namespace Tradic.Model
         {
             languageHelper.RemoveEntity(languageHelper.GetLanguages().First(l => l.Id == language.Id));
         }
+
+        public void RemoveEntity(Entity.Description description)
+        {
+            descriptionHelper.RemoveEntity(descriptionHelper.GetDescriptions().First(d => d.Id == description.Id));
+        }
+
+        #endregion
+
+        #region GetEntities
 
         public IEnumerable<Entity.Word> GetWords()
         {
@@ -80,15 +101,29 @@ namespace Tradic.Model
             return Tradic_Language;
         }
 
+        public IEnumerable<Entity.Description> GetDescriptions()
+        {
+            IEnumerable<DAL.Entity.Description> dal_descriptions = descriptionHelper.GetDescriptions();
+            List<Entity.Description> tradic_descriptions = new List<Entity.Description>();
+            foreach (DAL.Entity.Description description in dal_descriptions)
+            {
+                tradic_descriptions.Add(new Entity.Description { Id = description.Id, Text = description.Text, WordId = description.WordId });
+            }
+            return tradic_descriptions;
+        }
+
+        #endregion
+
         public static IAccessible GetInstance()
         {
             if (CurrentInstance == null)
             {
                 CurrentInstance = new TradicAccessible();
-                TradicDataAccess access = new TradicDataAccess();
+                TradicDataAccess access = TradicDataAccess.GetInstance();
                 transHelper = new TranslationHelper(access);
                 wordHelper = new WordHelper(access);
                 languageHelper = new LanguageHelper(access);
+                descriptionHelper = new DescriptionHelper(access);
             }
             return CurrentInstance;
         }

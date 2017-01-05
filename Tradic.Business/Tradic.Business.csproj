@@ -41,14 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IEntityHelper.cs" />
-    <Compile Include="ILanguageHelper.cs" />
-    <Compile Include="ITranslationHelper.cs" />
-    <Compile Include="IWordHelper.cs" />
-    <Compile Include="LanguageHelper.cs" />
+    <Compile Include="Helper\DescriptionHelper.cs" />
+    <Compile Include="Helper\IDescriptionHelper.cs" />
+    <Compile Include="Helper\IEntityHelper.cs" />
+    <Compile Include="Helper\ILanguageHelper.cs" />
+    <Compile Include="Helper\ITranslationHelper.cs" />
+    <Compile Include="Helper\IWordHelper.cs" />
+    <Compile Include="Helper\LanguageHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TranslationHelper.cs" />
-    <Compile Include="WordHelper.cs" />
+    <Compile Include="Helper\TranslationHelper.cs" />
+    <Compile Include="Helper\WordHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tradic.DAL\Tradic.DAL.csproj">
