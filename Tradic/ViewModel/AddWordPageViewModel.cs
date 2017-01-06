@@ -72,9 +72,13 @@ namespace Tradic.ViewModel
                 Translation translation = dataAccess.GetTranslations().Last();
 
                 dataAccess.AddEntity(new Word { Text = OriginalWordText, LanguageId = SelectedOriginalLanguage.Id, TranslationId = translation.Id });
+                dataAccess.AddEntity(new Description { Text = OriginalWordDescription, WordId = dataAccess.GetWords().Last().Id });
                 dataAccess.AddEntity(new Word { Text = TranslationWordText, LanguageId = SelectedTranslationLanguage.Id, TranslationId = translation.Id });
+                dataAccess.AddEntity(new Description { Text = TranslationWordDescription, WordId = dataAccess.GetWords().Last().Id });
                 OriginalWordText = "";
                 TranslationWordText = "";
+                OriginalWordDescription = "";
+                TranslationWordDescription = "";
             }
             else if (OriginalWordText == "" || OriginalWordText == null) MessageBox.Show("You must enter original word", "Enter warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             else if (TranslationWordText == "" || TranslationWordText == null) MessageBox.Show("You mus enter translation word", "Enter warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -171,6 +175,34 @@ namespace Tradic.ViewModel
                 _translation_word_text = value;
                 if (_translation_word_text == " ") _translation_word_text = "";
                 NotifyPropertyChanged("TranslationWordText");
+            }
+        }
+
+        string _originalWordDescription;
+        public string OriginalWordDescription
+        {
+            get
+            {
+                return _originalWordDescription;
+            }
+            set
+            {
+                _originalWordDescription = value;
+                NotifyPropertyChanged("OriginalWordDescription");
+            }
+        }
+
+        string _translationWordDescription;
+        public string TranslationWordDescription
+        {
+            get
+            {
+                return _translationWordDescription;
+            }
+            set
+            {
+                _translationWordDescription = value;
+                NotifyPropertyChanged("TranslationWordDescription");
             }
         }
 

@@ -20,6 +20,7 @@ namespace Tradic.ViewModel
         IAccessible dataAccess;
         public event PropertyChangedEventHandler PropertyChanged;
         ObservableCollection<Word> Words;
+        ObservableCollection<Description> Descriptions;
         Page currentPage;
 
         public MainViewModel(Page currentPage)
@@ -27,9 +28,12 @@ namespace Tradic.ViewModel
             this.currentPage = currentPage;
             dataAccess = TradicAccessible.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
+            Descriptions = new ObservableCollection<Description>(dataAccess.GetDescriptions());
             OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
             Initialize();
             PropertyChanged += UpdateTranslations;
+            PropertyChanged += UpdateOriginalDescription;
+            PropertyChanged += UpdateTranslationDescription;
         }
 
         #region Initialization
@@ -46,6 +50,8 @@ namespace Tradic.ViewModel
             GoToAddWordPageCommand = new Command(arg => GoToAddWordPage(currentPage));
             AddNewTranslationCommand = new Command(arg => AddNewTranslation());
             GoToTestingPageCommand = new Command(arg => GoToTestingPage(currentPage));
+            SaveOriginalWordDescriptionCommand = new Command(arg => SaveOriginalWordDescription());
+            SaveTranslationWordDescriptionCommand = new Command(arg => SaveTranslationWordDescription());
         }
         void InitializeProperties()
         {
@@ -67,6 +73,35 @@ namespace Tradic.ViewModel
                 TranslationWords = new ObservableCollection<Word>(Words.Where(w => w.LanguageId == SelectedTranslationLanguage.Id && w.TranslationId == SelectedOriginalWord.TranslationId).ToList());
             if (e.PropertyName == "SelectedOriginalLanguage") TranslationWords.Clear();
         }
+        void UpdateOriginalDescription(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SelectedOriginalWord" && SelectedOriginalWord != null && Descriptions.ToList().Exists(d => d.WordId == SelectedOriginalWord.Id))
+            {
+                OriginalWordDescription = Descriptions.First(d => d.WordId == SelectedOriginalWord.Id).Text;
+            }
+            else if ((e.PropertyName != "SelectedOriginalWord" || SelectedOriginalWord == null || !Descriptions.ToList().Exists(d => d.WordId == SelectedOriginalWord.Id)) &&
+                OriginalWordDescription != "" &&
+                OriginalWordDescription != null &&
+                (e.PropertyName == "SelectedOriginalLanguage" || e.PropertyName == "SelectedOriginalWord"))
+            {
+                OriginalWordDescription = "";
+            }
+        }
+        void UpdateTranslationDescription(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SelectedTranslationWord" && SelectedTranslationWord != null && Descriptions.ToList().Exists(d => d.WordId == SelectedTranslationWord.Id))
+            {
+                TranslationWordDescription = Descriptions.First(d => d.WordId == SelectedTranslationWord.Id).Text;
+            }
+            else if ((e.PropertyName != "SelectedTranslationWord" || SelectedTranslationWord == null || !Descriptions.ToList().Exists(d => d.WordId == SelectedTranslationWord.Id)) &&
+                TranslationWordDescription != "" &&
+                TranslationWordDescription != null &&
+                e.PropertyName != "TranslationWordDescription" &&
+                e.PropertyName != "OriginalWordDescription")
+            {
+                TranslationWordDescription = "";
+            }
+        }
 
         #region Commands
         public ICommand GoToAddWordPageCommand { get; set; }
@@ -87,6 +122,7 @@ namespace Tradic.ViewModel
                     dataAccess.RemoveEntity(SelectedTranslationWord);
                     dataAccess.RemoveEntity(dataAccess.GetTranslations().Where(t => t.Id == SelectedTranslationWord.TranslationId).Last());
                 }
+                Descriptions.Remove(Descriptions.First(d => d.WordId == SelectedTranslationWord.Id));
 
                 Words.Remove(Words.First(w => w.Id == SelectedTranslationWord.Id));
                 TranslationWords.Remove(SelectedTranslationWord);
@@ -106,6 +142,7 @@ namespace Tradic.ViewModel
                     dataAccess.RemoveEntity(SelectedOriginalWord);
                     dataAccess.RemoveEntity(dataAccess.GetTranslations().Where(t => t.Id == SelectedOriginalWord.TranslationId).Last());
                 }
+                Descriptions.Remove(Descriptions.First(d => d.WordId == SelectedOriginalWord.Id));
 
                 Words.Remove(Words.First(w => w.Id == SelectedOriginalWord.Id));
                 OriginalWords.Remove(SelectedOriginalWord);
@@ -120,7 +157,7 @@ namespace Tradic.ViewModel
             if (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null && SelectedOriginalWord != null && TranslationWord != null && TranslationWord != "")
             {
                 Word lastWord = dataAccess.GetWords().Last();
-                Word translation = new Word {Id=lastWord.Id+1, Text = TranslationWord, LanguageId = SelectedTranslationLanguage.Id, TranslationId = SelectedOriginalWord.TranslationId };
+                Word translation = new Word { Id = lastWord.Id + 1, Text = TranslationWord, LanguageId = SelectedTranslationLanguage.Id, TranslationId = SelectedOriginalWord.TranslationId };
                 dataAccess.AddEntity(translation);
                 Words.Add(translation);
                 TranslationWords.Add(translation);
@@ -136,6 +173,52 @@ namespace Tradic.ViewModel
         void GoToTestingPage(Page currentPage)
         {
             currentPage.NavigationService.Navigate(new TestingPage());
+        }
+
+        public ICommand SaveOriginalWordDescriptionCommand { get; set; }
+        public void SaveOriginalWordDescription()
+        {
+            if (SelectedOriginalWord != null)
+            {
+                Description description;
+                if (dataAccess.GetDescriptions().ToList().Exists(d => d.WordId == SelectedOriginalWord.Id))
+                {
+                    description = dataAccess.GetDescriptions().First(d => d.WordId == SelectedOriginalWord.Id);
+                    description.Text = OriginalWordDescription;
+                    dataAccess.ChangeEntity(description);
+                    Descriptions.First(d => d.WordId == SelectedOriginalWord.Id).Text = OriginalWordDescription;
+                }
+                else
+                {
+                    description = new Description { WordId = SelectedOriginalWord.Id, Text = OriginalWordDescription };
+                    dataAccess.AddEntity(description);
+                    Descriptions.Add(dataAccess.GetDescriptions().Last());
+                }
+            }
+            else MessageBox.Show("You must choose original word", "Choose warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        public ICommand SaveTranslationWordDescriptionCommand { get; set; }
+        public void SaveTranslationWordDescription()
+        {
+            if (SelectedTranslationWord != null)
+            {
+                Description description;
+                if (dataAccess.GetDescriptions().ToList().Exists(d => d.WordId == SelectedTranslationWord.Id))
+                {
+                    description = Descriptions.First(d => d.WordId == SelectedTranslationWord.Id);
+                    description.Text = TranslationWordDescription;
+                    dataAccess.ChangeEntity(description);
+                    Descriptions.First(d => d.WordId == SelectedTranslationWord.Id).Text = TranslationWordDescription;
+                }
+                else
+                {
+                    description = new Description { WordId = SelectedTranslationWord.Id, Text = TranslationWordDescription };
+                    dataAccess.AddEntity(description);
+                    Descriptions.Add(dataAccess.GetDescriptions().Last());
+                }
+            }
+            else MessageBox.Show("You must choose translation word", "Choose warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         #endregion
@@ -167,7 +250,6 @@ namespace Tradic.ViewModel
         {
             get
             {
-                //foreach (Word w in _original_words) w.Text = w.Text.ToUpperInvariant();
                 return _original_words;
             }
             set
@@ -182,7 +264,6 @@ namespace Tradic.ViewModel
         {
             get
             {
-                //foreach (Word w in _translation_words) w.Text = w.Text.ToUpperInvariant();
                 return _translation_words;
             }
             set
@@ -236,10 +317,18 @@ namespace Tradic.ViewModel
             }
         }
 
+        Word _selectedTranslationWord;
         public Word SelectedTranslationWord
         {
-            get;
-            set;
+            get
+            {
+                return _selectedTranslationWord;
+            }
+            set
+            {
+                _selectedTranslationWord = value;
+                NotifyPropertyChanged("SelectedTranslationWord");
+            }
         }
 
         string _translation_word;
@@ -254,6 +343,34 @@ namespace Tradic.ViewModel
                 _translation_word = value;
                 if (_translation_word == " ") _translation_word = "";
                 NotifyPropertyChanged("TranslationWord");
+            }
+        }
+
+        string _originalWordDescription;
+        public string OriginalWordDescription
+        {
+            get
+            {
+                return _originalWordDescription;
+            }
+            set
+            {
+                _originalWordDescription = value;
+                NotifyPropertyChanged("OriginalWordDescription");
+            }
+        }
+
+        string _translationWordDescription;
+        public string TranslationWordDescription
+        {
+            get
+            {
+                return _translationWordDescription;
+            }
+            set
+            {
+                _translationWordDescription = value;
+                NotifyPropertyChanged("TranslationWordDescription");
             }
         }
 

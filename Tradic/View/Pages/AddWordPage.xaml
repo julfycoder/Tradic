@@ -12,7 +12,7 @@
         <Label Content="Translation language" HorizontalAlignment="Left" Margin="549,93,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
         <Label Content="Translation word" HorizontalAlignment="Left" Margin="549,229,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
         <Label Content="Original word" HorizontalAlignment="Left" Margin="116,229,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
-        <TextBox x:Name="OrigianlWordBox" HorizontalAlignment="Left" Margin="116,260,0,229" TextWrapping="Wrap" Width="161" Text="{Binding Path=OriginalWordText, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
+        <TextBox x:Name="OrigianlWordBox" HorizontalAlignment="Left" Margin="116,260,0,229" TextWrapping="Wrap" Width="187" Text="{Binding Path=OriginalWordText, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding Path=AddNewWordCommand}"></KeyBinding>
             </TextBox.InputBindings>
@@ -22,7 +22,7 @@
                 <KeyBinding Key="Enter" Command="{Binding Path=AddNewWordCommand}"></KeyBinding>
             </TextBox.InputBindings>
         </TextBox>
-        <ListBox x:Name="OriginalLanguagesBox" HorizontalAlignment="Left" Height="87" Margin="116,124,0,0" VerticalAlignment="Top" Width="161" ItemsSource="{Binding Path=OriginalLanguages, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedOriginalLanguage, Mode=TwoWay}" FontSize="18" Foreground="#FFE48484" FontWeight="Bold">
+        <ListBox x:Name="OriginalLanguagesBox" HorizontalAlignment="Left" Height="87" Margin="116,124,0,0" VerticalAlignment="Top" Width="187" ItemsSource="{Binding Path=OriginalLanguages, Mode=TwoWay}" SelectedItem="{Binding Path=SelectedOriginalLanguage, Mode=TwoWay}" FontSize="18" Foreground="#FFE48484" FontWeight="Bold">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=Name}"/>
@@ -37,7 +37,11 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Button x:Name="WatchButton" Content="Dictionary" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="157" Height="46" Background="Orange" Foreground="Yellow" FontWeight="Bold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GoToMainPageCommand}" FontSize="18"/>
-        <Button Content="Add Word" HorizontalAlignment="Left" Margin="305,349,0,0" VerticalAlignment="Top" Width="200"  Height="47" Background="#FF0FC96C" Foreground="Yellow" FontWeight="Bold" BorderBrush="#FF0FC96C" Cursor="Hand" Command="{Binding Path=AddNewWordCommand}" FontSize="16"/>
+        <Button Content="Add Word" HorizontalAlignment="Left" Margin="305,417,0,0" VerticalAlignment="Top" Width="200"  Height="47" Background="#FF0FC96C" Foreground="Yellow" FontWeight="Bold" BorderBrush="#FF0FC96C" Cursor="Hand" Command="{Binding Path=AddNewWordCommand}" FontSize="16"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="116,338,0,0" TextWrapping="Wrap" Text="{Binding Path=OriginalWordDescription, Mode=TwoWay}" VerticalAlignment="Top" Width="187"/>
+        <Label Content="Description" HorizontalAlignment="Left" Margin="116,304,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
+        <Label Content="Description" HorizontalAlignment="Left" Margin="549,304,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="549,338,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWordDescription, Mode=TwoWay}" VerticalAlignment="Top" Width="187"/>
 
     </Grid>
 </Page>

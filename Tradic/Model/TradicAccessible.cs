@@ -46,24 +46,23 @@ namespace Tradic.Model
 
         public void ChangeEntity(Entity.Description description)
         {
-            descriptionHelper.ChangeEntity(new DAL.Entity.Description
-            {
-                Id = description.Id,
-                Text = description.Text,
-                WordId = description.WordId
-            });
+            DAL.Entity.Description desc = descriptionHelper.GetDescriptions().First(d => d.Id == description.Id);
+            desc.Text = description.Text;
+            desc.WordId = description.WordId;
+            desc.Word = wordHelper.GetWords().First(w => w.Id == description.WordId);
+            descriptionHelper.ChangeEntity(desc);
         }
 
         public void ChangeEntity(Entity.Word word)
         {
-            wordHelper.ChangeEntity(new DAL.Entity.Word
-            {
-                Id = word.Id,
-                LanguageId = word.LanguageId,
-                Text = word.Text,
-                Priority = word.Priority,
-                TranslationId = word.TranslationId,
-            });
+            DAL.Entity.Word w = wordHelper.GetWords().First(target => target.Id == word.Id);
+            w.Text = word.Text;
+            w.LanguageId = word.LanguageId;
+            w.TranslationId = word.TranslationId;
+            w.Priority = word.Priority;
+            w.Language = languageHelper.GetLanguages().First(l => l.Id == word.LanguageId);
+            w.Translation = transHelper.GetTranslations().First(t => t.Id == word.TranslationId);
+            wordHelper.ChangeEntity(w);
         }
 
         #endregion
