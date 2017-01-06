@@ -50,8 +50,8 @@
         </TextBox>
         <Button x:Name="AddButton_Copy" Content="Testing" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="145" Height="46" Foreground="Yellow" FontWeight="Bold" BorderBrush="#FF8ED45D" Cursor="Hand" Background="#FF8ED45D" Command="{Binding Path=GoToTestingPageCommand}" FontSize="18" RenderTransformOrigin="0.5,0.5">
         </Button>
-        <TextBox HorizontalAlignment="Left" Height="73" Margin="111,502,0,0" TextWrapping="Wrap" Text="{Binding Path=OriginalWordDescription, Mode=TwoWay}" VerticalAlignment="Top" Width="258"/>
-        <TextBox HorizontalAlignment="Left" Height="73" Margin="457,502,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWordDescription, Mode=TwoWay}" VerticalAlignment="Top" Width="258"/>
+        <TextBox HorizontalAlignment="Left" Height="73" Margin="111,502,0,0" TextWrapping="Wrap" Text="{Binding Path=OriginalWordDescription, Mode=TwoWay}" VerticalAlignment="Top" Width="258" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <TextBox HorizontalAlignment="Left" Height="73" Margin="457,502,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWordDescription, Mode=TwoWay}" VerticalAlignment="Top" Width="258" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         <Button x:Name="RemoveWordButton_Copy" Content="Save description" HorizontalAlignment="Left" Margin="111,580,0,0" VerticalAlignment="Top" Width="258" Height="33" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding SaveOriginalWordDescriptionCommand}" FontSize="14"/>
         <Button x:Name="RemoveWordButton_Copy1" Content="Save description" HorizontalAlignment="Left" Margin="457,580,0,0" VerticalAlignment="Top" Width="258" Height="33" Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding SaveTranslationWordDescriptionCommand}" FontSize="14"/>
 

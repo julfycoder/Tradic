@@ -25,12 +25,14 @@ namespace Tradic.ViewModel
         Word originalWord;
         IEnumerable<Word> translationWords;
         IEnumerable<Language> languages;
+        IEnumerable<Description> descriptions;
         public TestingPageViewModel(Page currentPage)
         {
             this.currentPage = currentPage;
             dataAccess = TradicAccessible.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
             languages = dataAccess.GetLanguages();
+            descriptions = dataAccess.GetDescriptions();
             Initialize();
         }
 
@@ -47,6 +49,7 @@ namespace Tradic.ViewModel
             GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
             GenerateTestCommand = new Command(arg => GenerateTest());
             ApplyCommand = new Command(arg => Apply());
+            ShowOriginalWordDescriptionCommand = new Command(arg => ShowOriginalWordDescription());
         }
         void InitializeProperties()
         {
@@ -74,7 +77,6 @@ namespace Tradic.ViewModel
         Word GenerateOriginalWord()
         {
             return Words[Selection.GetIndexByMRAlgo(Words.Count)];
-            //return Words[Selection.GetRandom(Words.Count)];
         }
         IEnumerable<Word> GenerateTranslationWords(Word originalWord)
         {
@@ -89,7 +91,7 @@ namespace Tradic.ViewModel
             }
             return translationWords;
         }
-
+        
         #endregion
 
         #region PropertyChanged
@@ -107,12 +109,15 @@ namespace Tradic.ViewModel
         {
             currentPage.NavigationService.Navigate(new MainPage());
         }
+
         public ICommand GenerateTestCommand { get; set; }
         void GenerateTest()
         {
             GenerateTestPair();
             TranslationWord = "";
+            OriginalWordDescription = null;
         }
+
         public ICommand ApplyCommand { get; set; }
         void Apply()
         {
@@ -121,6 +126,15 @@ namespace Tradic.ViewModel
                 GenerateTest();
             }
             else MessageBox.Show("Your translation is incorrect!", "Incorrect translation", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public ICommand ShowOriginalWordDescriptionCommand { get; set; }
+        void ShowOriginalWordDescription()
+        {
+            if (descriptions.Any(d => d.WordId == originalWord.Id))
+            {
+                OriginalWordDescription = descriptions.First(d => d.WordId == originalWord.Id).Text;
+            }
         }
 
         #endregion
@@ -166,6 +180,20 @@ namespace Tradic.ViewModel
             {
                 _translation_language = value;
                 NotifyPropertyChanged("TranslationLanguage");
+            }
+        }
+
+        string _originalWordDescription;
+        public string OriginalWordDescription
+        {
+            get
+            {
+                return _originalWordDescription;
+            }
+            set
+            {
+                _originalWordDescription = value;
+                NotifyPropertyChanged("OriginalWordDescription");
             }
         }
 

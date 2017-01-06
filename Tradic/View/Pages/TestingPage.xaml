@@ -8,6 +8,7 @@
 	Title="TestingPage">
 
     <Grid>
+            
         <TextBox HorizontalAlignment="Left" Height="36" Margin="113,241,0,0" TextWrapping="Wrap" Text="{Binding Path=OriginalWord, Mode=OneWay}" VerticalAlignment="Top" Width="166" IsReadOnly="True" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
         </TextBox>
         <TextBox HorizontalAlignment="Left" Height="36" Margin="364,241,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="149" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
@@ -16,7 +17,7 @@
             </TextBox.InputBindings>
         </TextBox>
         <Button Content="Apply" HorizontalAlignment="Left" Margin="586,241,0,0" VerticalAlignment="Top" Width="149"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=ApplyCommand}" Height="36" FontSize="16"/>
-        <Button Content="Next" HorizontalAlignment="Left" Margin="321,315,0,0" VerticalAlignment="Top" Width="226"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GenerateTestCommand}" Height="45" FontSize="16"/>
+        <Button Content="Next" HorizontalAlignment="Left" Margin="305,445,0,0" VerticalAlignment="Top" Width="226"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GenerateTestCommand}" Height="45" FontSize="16"/>
         <Label Content="Translate in" HorizontalAlignment="Left" Margin="363,124,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
         <Label Content="{Binding Path=TranslationLanguage, Mode=OneWay}" HorizontalAlignment="Left" Margin="363,163,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold" RenderTransformOrigin="-11.5,0.529">
             <Label.ContentTemplate>
@@ -28,6 +29,9 @@
         <Label Content="Language" HorizontalAlignment="Left" Margin="363,202,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold"/>
         <Button Content="Dictionary" HorizontalAlignment="Left" Margin="679,10,0,0" VerticalAlignment="Top" Width="125" Height="46"  Background="Orange" Foreground="Yellow" FontWeight="Bold" BorderBrush="Orange" Cursor="Hand" Command="{Binding Path=GoToMainPageCommand}" FontSize="18"/>
         <Label Content="Translation test to improve your knowledge" HorizontalAlignment="Left" Margin="158,57,0,0" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="#FFC7BE00"/>
+        <TextBox Text="{Binding Path=OriginalWordDescription,Mode=OneWay}" HorizontalAlignment="Left" Margin="113,323,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold" MaxHeight="100" MaxWidth="400" Background="Transparent" BorderBrush="Transparent" IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionBrush="White" TextWrapping="Wrap">
+        </TextBox>
+        <Button Content="Show description" HorizontalAlignment="Left" Margin="113,282,0,0" VerticalAlignment="Top" Width="166"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding ShowOriginalWordDescriptionCommand}" Height="36" FontSize="16"/>
 
     </Grid>
 </Page>
