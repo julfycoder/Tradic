@@ -86,6 +86,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Collections\WordsComparer.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Model\Entity\Description.cs" />
     <Compile Include="Model\Entity\Entity.cs" />
