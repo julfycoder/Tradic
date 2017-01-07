@@ -26,6 +26,7 @@ namespace Tradic.ViewModel
         IEnumerable<Word> translationWords;
         IEnumerable<Language> languages;
         IEnumerable<Description> descriptions;
+        Word openableTranslation = null;
         public TestingPageViewModel(Page currentPage)
         {
             this.currentPage = currentPage;
@@ -50,6 +51,7 @@ namespace Tradic.ViewModel
             GenerateTestCommand = new Command(arg => GenerateTest());
             ApplyCommand = new Command(arg => Apply());
             ShowOriginalWordDescriptionCommand = new Command(arg => ShowOriginalWordDescription());
+            ShowNextLetterCommand = new Command(arg => ShowNextLetter());
         }
         void InitializeProperties()
         {
@@ -137,6 +139,37 @@ namespace Tradic.ViewModel
             }
         }
 
+        public ICommand ShowNextLetterCommand { get; set; }
+        void ShowNextLetter()
+        {
+            if (openableTranslation == null || translationWords.All(w => w.Id != openableTranslation.Id))
+            {
+                openableTranslation = translationWords.ToList()[Selection.GetRandom(translationWords.Count())];
+            }
+            if (TranslationWord == null || TranslationWord == "")
+            {
+                TranslationWord = openableTranslation.Text[0].ToString();
+            }
+            else
+            {
+                if (TranslationWord.Length < openableTranslation.Text.Length &&
+                    openableTranslation.Text.Substring(0, TranslationWord.Length) == TranslationWord)
+                {
+                    TranslationWord += openableTranslation.Text[TranslationWord.Length];
+                }
+                else
+                {
+                    for (int i = 0; i < TranslationWord.Length; i++)
+                    {
+                        if (TranslationWord[i] != openableTranslation.Text[i])
+                        {
+                            TranslationWord = openableTranslation.Text.Substring(0, i + 1);
+                        }
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Properties
@@ -146,7 +179,7 @@ namespace Tradic.ViewModel
         {
             get
             {
-                return _original_word;//.ToUpperInvariant();
+                return _original_word;
             }
             set
             {
@@ -164,7 +197,7 @@ namespace Tradic.ViewModel
             }
             set
             {
-                _translation_word = value;
+                if (value != " ") _translation_word = value;
                 NotifyPropertyChanged("TranslationWord");
             }
         }

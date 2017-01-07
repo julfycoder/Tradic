@@ -32,6 +32,7 @@
         <TextBox Text="{Binding Path=OriginalWordDescription,Mode=OneWay}" HorizontalAlignment="Left" Margin="113,323,0,0" VerticalAlignment="Top" Foreground="#FFCBEA60" FontSize="18" FontWeight="Bold" MaxHeight="100" MaxWidth="400" Background="Transparent" BorderBrush="Transparent" IsReadOnly="True" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionBrush="White" TextWrapping="Wrap">
         </TextBox>
         <Button Content="Show description" HorizontalAlignment="Left" Margin="113,282,0,0" VerticalAlignment="Top" Width="166"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding ShowOriginalWordDescriptionCommand}" Height="36" FontSize="16"/>
+        <Button Content="Show next letter" HorizontalAlignment="Left" Margin="365,282,0,0" VerticalAlignment="Top" Width="148"  Background="Orange" Foreground="Yellow" FontWeight="SemiBold" BorderBrush="Orange" Cursor="Hand" Command="{Binding ShowNextLetterCommand}" Height="36" FontSize="16"/>
 
     </Grid>
 </Page>
