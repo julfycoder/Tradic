@@ -98,6 +98,7 @@
     <Compile Include="ViewModel\AddWordPageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TestingPageViewModel.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\Pages\AddWordPage.xaml.cs">
       <DependentUpon>AddWordPage.xaml</DependentUpon>
     </Compile>

@@ -17,16 +17,14 @@ using System.Windows;
 
 namespace Tradic.ViewModel
 {
-    class AddWordPageViewModel : INotifyPropertyChanged
+    class AddWordPageViewModel :ViewModel, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         IAccessible dataAccess;
         Page currentPage;
-        public AddWordPageViewModel(Page currentPage)
+        public AddWordPageViewModel(Page currentPage):base()
         {
             this.currentPage = currentPage;
-            dataAccess = TradicAccessible.GetInstance();
-            Initialize();
         }
 
         void NotifyPropertyChanged(string propertyName)
@@ -36,17 +34,17 @@ namespace Tradic.ViewModel
 
         #region Initialize
 
-        void Initialize()
+        protected override void Initialize()
         {
-            InitializeCommands();
-            InitializeProperties();
+            dataAccess = TradicAccessible.GetInstance();
+            base.Initialize();
         }
-        void InitializeCommands()
+        protected override void InitializeCommands()
         {
             GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
             AddNewWordCommand = new Command(arg => AddNewWord());
         }
-        void InitializeProperties()
+        protected override void InitializeProperties()
         {
             OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
         }

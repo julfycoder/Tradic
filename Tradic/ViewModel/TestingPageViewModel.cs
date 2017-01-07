@@ -17,7 +17,7 @@ using System.Windows;
 
 namespace Tradic.ViewModel
 {
-    class TestingPageViewModel:INotifyPropertyChanged
+    class TestingPageViewModel:ViewModel, INotifyPropertyChanged
     {
         IAccessible dataAccess;
         Page currentPage;
@@ -27,25 +27,25 @@ namespace Tradic.ViewModel
         IEnumerable<Language> languages;
         IEnumerable<Description> descriptions;
         Word openableTranslation = null;
-        public TestingPageViewModel(Page currentPage)
+        public TestingPageViewModel(Page currentPage):base()
         {
             this.currentPage = currentPage;
-            dataAccess = TradicAccessible.GetInstance();
-            Words = new ObservableCollection<Word>(dataAccess.GetWords());
-            languages = dataAccess.GetLanguages();
-            descriptions = dataAccess.GetDescriptions();
-            Initialize();
         }
 
         #region Initialization
 
-        void Initialize()
+        protected override void Initialize()
         {
-            InitializeCommands();
-            InitializeProperties();
+            dataAccess = TradicAccessible.GetInstance();
+            Words = new ObservableCollection<Word>(dataAccess.GetWords());
+            languages = dataAccess.GetLanguages();
+            descriptions = dataAccess.GetDescriptions();
+
+            base.Initialize();
+
             GenerateTestPair();
         }
-        void InitializeCommands()
+        protected override void InitializeCommands()
         {
             GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
             GenerateTestCommand = new Command(arg => GenerateTest());
@@ -53,7 +53,7 @@ namespace Tradic.ViewModel
             ShowOriginalWordDescriptionCommand = new Command(arg => ShowOriginalWordDescription());
             ShowNextLetterCommand = new Command(arg => ShowNextLetter());
         }
-        void InitializeProperties()
+        protected override void InitializeProperties()
         {
             
         }

@@ -15,7 +15,7 @@ using System.Windows;
 
 namespace Tradic.ViewModel
 {
-    class MainViewModel : INotifyPropertyChanged
+    class MainViewModel : ViewModel, INotifyPropertyChanged
     {
         IAccessible dataAccess;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -23,27 +23,25 @@ namespace Tradic.ViewModel
         ObservableCollection<Description> Descriptions;
         Page currentPage;
 
-        public MainViewModel(Page currentPage)
+        public MainViewModel(Page currentPage):base()
         {
             this.currentPage = currentPage;
-            dataAccess = TradicAccessible.GetInstance();
-            Words = new ObservableCollection<Word>(dataAccess.GetWords());
-            Descriptions = new ObservableCollection<Description>(dataAccess.GetDescriptions());
-            OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
-            Initialize();
-            PropertyChanged += UpdateTranslations;
-            PropertyChanged += UpdateOriginalDescription;
-            PropertyChanged += UpdateTranslationDescription;
         }
 
         #region Initialization
 
-        void Initialize()
+        protected override void Initialize()
         {
-            InitializeCommands();
-            InitializeProperties();
+            dataAccess = TradicAccessible.GetInstance();
+            Words = new ObservableCollection<Word>(dataAccess.GetWords());
+            Descriptions = new ObservableCollection<Description>(dataAccess.GetDescriptions());
+            OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
+            PropertyChanged += UpdateTranslations;
+            PropertyChanged += UpdateOriginalDescription;
+            PropertyChanged += UpdateTranslationDescription;
+            base.Initialize();
         }
-        void InitializeCommands()
+        protected override void InitializeCommands()
         {
             RemoveTranslationCommand = new Command(arg => RemoveTranslation());
             RemoveOriginalWordCommand = new Command(arg => RemoveOriginalWord());
@@ -53,7 +51,7 @@ namespace Tradic.ViewModel
             SaveOriginalWordDescriptionCommand = new Command(arg => SaveOriginalWordDescription());
             SaveTranslationWordDescriptionCommand = new Command(arg => SaveTranslationWordDescription());
         }
-        void InitializeProperties()
+        protected override void InitializeProperties()
         {
             SelectedOriginalLanguage = OriginalLanguages.ToList()[0];
             OriginalWords = new ObservableCollection<Word>(Words.Where(w => w.LanguageId == SelectedOriginalLanguage.Id));
@@ -61,6 +59,8 @@ namespace Tradic.ViewModel
         }
 
         #endregion
+
+        #region PropertyChanged
 
         void NotifyPropertyChanged(string propertyName)
         {
@@ -71,7 +71,7 @@ namespace Tradic.ViewModel
         {
             if ((e.PropertyName == "SelectedOriginalWord" || e.PropertyName == "SelectedTranslationLanguage") && SelectedTranslationLanguage != null && SelectedOriginalWord != null)
                 TranslationWords = new ObservableCollection<Word>(Words.Where(w => w.LanguageId == SelectedTranslationLanguage.Id && w.TranslationId == SelectedOriginalWord.TranslationId).ToList());
-            if (e.PropertyName == "SelectedOriginalLanguage") TranslationWords.Clear();
+            if (e.PropertyName == "SelectedOriginalLanguage"&&TranslationWords!=null) TranslationWords.Clear();
         }
         void UpdateOriginalDescription(object sender, PropertyChangedEventArgs e)
         {
@@ -102,6 +102,8 @@ namespace Tradic.ViewModel
                 TranslationWordDescription = "";
             }
         }
+
+        #endregion
 
         #region Commands
         public ICommand GoToAddWordPageCommand { get; set; }
