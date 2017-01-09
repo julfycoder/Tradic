@@ -33,10 +33,6 @@ namespace Tradic.ViewModel
         {
             dataAccess = TradicAccessible.GetInstance();
         }
-        protected override void InitializeEvents()
-        {
-
-        }
         protected override void InitializeCommands()
         {
             GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));

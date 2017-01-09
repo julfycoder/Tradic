@@ -27,9 +27,9 @@ namespace Tradic.ViewModel
             InitializeCommands();
             InitializeProperties();
         }
-        protected abstract void InitializeCommands();
-        protected abstract void InitializeProperties();
-        protected abstract void InitializeEvents();
-        protected abstract void InitializeFields();
+        protected virtual void InitializeCommands() { }
+        protected virtual void InitializeProperties() { }
+        protected virtual void InitializeEvents() { }
+        protected virtual void InitializeFields() { }
     }
 }

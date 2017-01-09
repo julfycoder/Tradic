@@ -17,7 +17,7 @@ using System.Windows;
 
 namespace Tradic.ViewModel
 {
-    class TestingPageViewModel : ViewModel
+    class TestingPageViewModel:ViewModel
     {
         IAccessible dataAccess;
         Page currentPage;
@@ -27,8 +27,7 @@ namespace Tradic.ViewModel
         IEnumerable<Language> languages;
         IEnumerable<Description> descriptions;
         Word openableTranslation = null;
-        public TestingPageViewModel(Page currentPage)
-            : base()
+        public TestingPageViewModel(Page currentPage):base()
         {
             this.currentPage = currentPage;
             GenerateTestPair();
@@ -43,10 +42,6 @@ namespace Tradic.ViewModel
             languages = dataAccess.GetLanguages();
             descriptions = dataAccess.GetDescriptions();
         }
-        protected override void InitializeEvents()
-        {
-
-        }
         protected override void InitializeCommands()
         {
             GoToMainPageCommand = new Command(arg => GoToMainPage(currentPage));
@@ -54,10 +49,6 @@ namespace Tradic.ViewModel
             ApplyCommand = new Command(arg => Apply());
             ShowOriginalWordDescriptionCommand = new Command(arg => ShowOriginalWordDescription());
             ShowNextLetterCommand = new Command(arg => ShowNextLetter());
-        }
-        protected override void InitializeProperties()
-        {
-
         }
 
         #endregion
@@ -68,7 +59,7 @@ namespace Tradic.ViewModel
         {
             originalWord = null;
             translationWords = null;
-
+            
             while (translationWords == null)
             {
                 originalWord = GenerateOriginalWord();
@@ -95,15 +86,7 @@ namespace Tradic.ViewModel
             }
             return translationWords;
         }
-
-        #endregion
-
-        #region PropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
         #endregion
 
         #region Commands
@@ -211,7 +194,7 @@ namespace Tradic.ViewModel
             {
                 return _translation_language;
             }
-            set
+            set 
             {
                 _translation_language = value;
                 NotifyPropertyChanged("TranslationLanguage");
