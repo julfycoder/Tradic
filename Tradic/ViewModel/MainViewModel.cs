@@ -15,31 +15,33 @@ using System.Windows;
 
 namespace Tradic.ViewModel
 {
-    class MainViewModel : ViewModel, INotifyPropertyChanged
+    class MainViewModel : ViewModel
     {
         IAccessible dataAccess;
-        public event PropertyChangedEventHandler PropertyChanged;
         ObservableCollection<Word> Words;
         ObservableCollection<Description> Descriptions;
         Page currentPage;
 
-        public MainViewModel(Page currentPage):base()
+        public MainViewModel(Page currentPage)
+            : base()
         {
             this.currentPage = currentPage;
         }
 
         #region Initialization
 
-        protected override void Initialize()
+        protected override void InitializeFields()
         {
             dataAccess = TradicAccessible.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
             Descriptions = new ObservableCollection<Description>(dataAccess.GetDescriptions());
             OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
+        }
+        protected override void InitializeEvents()
+        {
             PropertyChanged += UpdateTranslations;
             PropertyChanged += UpdateOriginalDescription;
             PropertyChanged += UpdateTranslationDescription;
-            base.Initialize();
         }
         protected override void InitializeCommands()
         {
@@ -62,16 +64,11 @@ namespace Tradic.ViewModel
 
         #region PropertyChanged
 
-        void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         void UpdateTranslations(object sender, PropertyChangedEventArgs e)
         {
             if ((e.PropertyName == "SelectedOriginalWord" || e.PropertyName == "SelectedTranslationLanguage") && SelectedTranslationLanguage != null && SelectedOriginalWord != null)
                 TranslationWords = new ObservableCollection<Word>(Words.Where(w => w.LanguageId == SelectedTranslationLanguage.Id && w.TranslationId == SelectedOriginalWord.TranslationId).ToList());
-            if (e.PropertyName == "SelectedOriginalLanguage"&&TranslationWords!=null) TranslationWords.Clear();
+            if (e.PropertyName == "SelectedOriginalLanguage" && TranslationWords != null) TranslationWords.Clear();
         }
         void UpdateOriginalDescription(object sender, PropertyChangedEventArgs e)
         {

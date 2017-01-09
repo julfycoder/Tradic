@@ -17,27 +17,25 @@ using System.Windows;
 
 namespace Tradic.ViewModel
 {
-    class AddWordPageViewModel :ViewModel, INotifyPropertyChanged
+    class AddWordPageViewModel : ViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         IAccessible dataAccess;
         Page currentPage;
-        public AddWordPageViewModel(Page currentPage):base()
+        public AddWordPageViewModel(Page currentPage)
+            : base()
         {
             this.currentPage = currentPage;
         }
 
-        void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         #region Initialize
 
-        protected override void Initialize()
+        protected override void InitializeFields()
         {
             dataAccess = TradicAccessible.GetInstance();
-            base.Initialize();
+        }
+        protected override void InitializeEvents()
+        {
+
         }
         protected override void InitializeCommands()
         {
@@ -153,7 +151,7 @@ namespace Tradic.ViewModel
             {
                 return _original_word_text;
             }
-            set 
+            set
             {
                 _original_word_text = value;
                 if (_original_word_text == " ") _original_word_text = "";

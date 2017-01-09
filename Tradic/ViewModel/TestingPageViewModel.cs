@@ -17,7 +17,7 @@ using System.Windows;
 
 namespace Tradic.ViewModel
 {
-    class TestingPageViewModel:ViewModel, INotifyPropertyChanged
+    class TestingPageViewModel : ViewModel
     {
         IAccessible dataAccess;
         Page currentPage;
@@ -27,23 +27,25 @@ namespace Tradic.ViewModel
         IEnumerable<Language> languages;
         IEnumerable<Description> descriptions;
         Word openableTranslation = null;
-        public TestingPageViewModel(Page currentPage):base()
+        public TestingPageViewModel(Page currentPage)
+            : base()
         {
             this.currentPage = currentPage;
+            GenerateTestPair();
         }
 
         #region Initialization
 
-        protected override void Initialize()
+        protected override void InitializeFields()
         {
             dataAccess = TradicAccessible.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
             languages = dataAccess.GetLanguages();
             descriptions = dataAccess.GetDescriptions();
+        }
+        protected override void InitializeEvents()
+        {
 
-            base.Initialize();
-
-            GenerateTestPair();
         }
         protected override void InitializeCommands()
         {
@@ -55,7 +57,7 @@ namespace Tradic.ViewModel
         }
         protected override void InitializeProperties()
         {
-            
+
         }
 
         #endregion
@@ -66,7 +68,7 @@ namespace Tradic.ViewModel
         {
             originalWord = null;
             translationWords = null;
-            
+
             while (translationWords == null)
             {
                 originalWord = GenerateOriginalWord();
@@ -93,7 +95,7 @@ namespace Tradic.ViewModel
             }
             return translationWords;
         }
-        
+
         #endregion
 
         #region PropertyChanged
@@ -209,7 +211,7 @@ namespace Tradic.ViewModel
             {
                 return _translation_language;
             }
-            set 
+            set
             {
                 _translation_language = value;
                 NotifyPropertyChanged("TranslationLanguage");
