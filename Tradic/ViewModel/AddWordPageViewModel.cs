@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using Tradic.View.Pages;
 using Tradic.Commands;
 using Tradic.Model;
-using Tradic.Model.Entity;
+using Tradic.Model.Entities;
 using System.Windows;
 
 
@@ -19,7 +19,7 @@ namespace Tradic.ViewModel
 {
     class AddWordPageViewModel : ViewModel
     {
-        IAccessible dataAccess;
+        ITradicIterator dataAccess;
         Page currentPage;
         public AddWordPageViewModel(Page currentPage)
             : base()
@@ -31,7 +31,7 @@ namespace Tradic.ViewModel
 
         protected override void InitializeFields()
         {
-            dataAccess = TradicAccessible.GetInstance();
+            dataAccess = TradicIterator.GetInstance();
         }
         protected override void InitializeCommands()
         {

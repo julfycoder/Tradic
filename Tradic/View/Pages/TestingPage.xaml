@@ -11,7 +11,7 @@
             
         <TextBox HorizontalAlignment="Left" Height="36" Margin="113,241,0,0" TextWrapping="Wrap" Text="{Binding Path=OriginalWord, Mode=OneWay}" VerticalAlignment="Top" Width="166" IsReadOnly="True" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
         </TextBox>
-        <TextBox HorizontalAlignment="Left" Height="36" Margin="364,241,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=TwoWay}" VerticalAlignment="Top" Width="149" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
+        <TextBox HorizontalAlignment="Left" Height="36" Margin="364,241,0,0" TextWrapping="Wrap" Text="{Binding Path=TranslationWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="149" Foreground="#FFE48484" FontSize="18" FontWeight="Bold">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding Path=ApplyCommand}"/>
             </TextBox.InputBindings>

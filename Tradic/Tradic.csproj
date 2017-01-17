@@ -88,13 +88,14 @@
     </Compile>
     <Compile Include="Collections\WordsComparer.cs" />
     <Compile Include="Commands\Command.cs" />
-    <Compile Include="Model\Entity\Description.cs" />
-    <Compile Include="Model\Entity\Entity.cs" />
-    <Compile Include="Model\Entity\Language.cs" />
-    <Compile Include="Model\Entity\Translation.cs" />
-    <Compile Include="Model\Entity\Word.cs" />
-    <Compile Include="Model\IAccessible.cs" />
-    <Compile Include="Model\TradicAccessible.cs" />
+    <Compile Include="Model\Entities\Description.cs" />
+    <Compile Include="Model\Entities\Entity.cs" />
+    <Compile Include="Model\Entities\Language.cs" />
+    <Compile Include="Model\Entities\Translation.cs" />
+    <Compile Include="Model\Entities\Word.cs" />
+    <Compile Include="Model\ITradicIterator.cs" />
+    <Compile Include="Model\TradicIterator.cs" />
+    <Compile Include="Exams\EqualExam.cs" />
     <Compile Include="ViewModel\AddWordPageViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TestingPageViewModel.cs" />

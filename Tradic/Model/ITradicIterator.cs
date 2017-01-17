@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tradic.Model.Entity;
+using Tradic.Model.Entities;
 
 namespace Tradic.Model
 {
-    public interface IAccessible
+    public interface ITradicIterator
     {
         void AddEntity(Word word);
         void AddEntity(Translation translation);

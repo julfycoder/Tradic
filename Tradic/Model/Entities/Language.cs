@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tradic.Model.Entity
+namespace Tradic.Model.Entities
 {
     public class Language:Entity
     {

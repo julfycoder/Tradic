@@ -8,39 +8,39 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 
-using Tradic.Model.Entity;
+using Tradic.Model.Entities;
 using Tradic.Model;
 using Tradic.Commands;
 using Tradic.View.Pages;
 using Tradic.Algorithmics;
 using System.Windows;
+using Tradic.Exams;
 
 namespace Tradic.ViewModel
 {
-    class TestingPageViewModel:ViewModel
+    class TestingPageViewModel : ViewModel
     {
-        IAccessible dataAccess;
+        ITradicIterator entitiesIterator;
         Page currentPage;
-        ObservableCollection<Word> Words;
-        Word originalWord;
-        IEnumerable<Word> translationWords;
         IEnumerable<Language> languages;
-        IEnumerable<Description> descriptions;
-        Word openableTranslation = null;
-        public TestingPageViewModel(Page currentPage):base()
+        EqualExam transService;
+
+        public TestingPageViewModel(Page currentPage)
+            : base()
         {
             this.currentPage = currentPage;
-            GenerateTestPair();
         }
 
         #region Initialization
 
         protected override void InitializeFields()
         {
-            dataAccess = TradicAccessible.GetInstance();
-            Words = new ObservableCollection<Word>(dataAccess.GetWords());
-            languages = dataAccess.GetLanguages();
-            descriptions = dataAccess.GetDescriptions();
+            entitiesIterator = TradicIterator.GetInstance();
+            languages = entitiesIterator.GetLanguages();
+            transService = new EqualExam(entitiesIterator);
+
+            GenerateTest();
+            TranslationLanguage = languages.First(l => l.Id == transService.GetTranslation().LanguageId);
         }
         protected override void InitializeCommands()
         {
@@ -51,42 +51,6 @@ namespace Tradic.ViewModel
             ShowNextLetterCommand = new Command(arg => ShowNextLetter());
         }
 
-        #endregion
-
-        #region TestGenerating
-
-        void GenerateTestPair()
-        {
-            originalWord = null;
-            translationWords = null;
-            
-            while (translationWords == null)
-            {
-                originalWord = GenerateOriginalWord();
-                translationWords = GenerateTranslationWords(originalWord);
-            }
-
-            OriginalWord = originalWord.Text;
-            TranslationLanguage = languages.First(l => l.Id == translationWords.ToList()[0].LanguageId);
-        }
-        Word GenerateOriginalWord()
-        {
-            return Words[Selection.GetIndexByMRAlgo(Words.Count)];
-        }
-        IEnumerable<Word> GenerateTranslationWords(Word originalWord)
-        {
-            Word translationWord = null;
-            IEnumerable<Word> translationWords = Words.Where(w => w.TranslationId == originalWord.TranslationId && w.Id != originalWord.Id && w.LanguageId != originalWord.LanguageId);
-            Language language = languages.First(l => l.Id == translationWords.ToList()[Selection.GetRandom(translationWords.Count() - 1)].LanguageId);
-            translationWords = translationWords.Where(w => w.LanguageId == language.Id);
-
-            if (translationWords != null)
-            {
-                translationWord = translationWords.ToList()[Selection.GetRandom(translationWords.Count() - 1)];
-            }
-            return translationWords;
-        }
-        
         #endregion
 
         #region Commands
@@ -100,7 +64,7 @@ namespace Tradic.ViewModel
         public ICommand GenerateTestCommand { get; set; }
         void GenerateTest()
         {
-            GenerateTestPair();
+            OriginalWord = transService.GenerateWord().Text;
             TranslationWord = "";
             OriginalWordDescription = null;
         }
@@ -108,7 +72,7 @@ namespace Tradic.ViewModel
         public ICommand ApplyCommand { get; set; }
         void Apply()
         {
-            if (translationWords.Any(w => w.Text.ToLower() == TranslationWord.ToLower()))
+            if(transService.IsTranslationCorrect(TranslationWord))
             {
                 GenerateTest();
             }
@@ -118,19 +82,13 @@ namespace Tradic.ViewModel
         public ICommand ShowOriginalWordDescriptionCommand { get; set; }
         void ShowOriginalWordDescription()
         {
-            if (descriptions.Any(d => d.WordId == originalWord.Id))
-            {
-                OriginalWordDescription = descriptions.First(d => d.WordId == originalWord.Id).Text;
-            }
+            OriginalWordDescription = transService.GetDescription().Text;
         }
 
         public ICommand ShowNextLetterCommand { get; set; }
         void ShowNextLetter()
         {
-            if (openableTranslation == null || translationWords.All(w => w.Id != openableTranslation.Id))
-            {
-                openableTranslation = translationWords.ToList()[Selection.GetRandom(translationWords.Count())];
-            }
+            Word openableTranslation = transService.GetTranslation();
             if (TranslationWord == null || TranslationWord == "")
             {
                 TranslationWord = openableTranslation.Text[0].ToString();
@@ -149,6 +107,7 @@ namespace Tradic.ViewModel
                         if (TranslationWord[i] != openableTranslation.Text[i])
                         {
                             TranslationWord = openableTranslation.Text.Substring(0, i + 1);
+                            break;
                         }
                     }
                 }
@@ -194,7 +153,7 @@ namespace Tradic.ViewModel
             {
                 return _translation_language;
             }
-            set 
+            set
             {
                 _translation_language = value;
                 NotifyPropertyChanged("TranslationLanguage");

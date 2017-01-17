@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using Tradic.Model;
-using Tradic.Model.Entity;
+using Tradic.Model.Entities;
 using System.Windows.Controls;
 using Tradic.Commands;
 using System.Windows.Input;
@@ -17,7 +17,7 @@ namespace Tradic.ViewModel
 {
     class MainViewModel : ViewModel
     {
-        IAccessible dataAccess;
+        ITradicIterator dataAccess;
         ObservableCollection<Word> Words;
         ObservableCollection<Description> Descriptions;
         Page currentPage;
@@ -32,7 +32,7 @@ namespace Tradic.ViewModel
 
         protected override void InitializeFields()
         {
-            dataAccess = TradicAccessible.GetInstance();
+            dataAccess = TradicIterator.GetInstance();
             Words = new ObservableCollection<Word>(dataAccess.GetWords());
             Descriptions = new ObservableCollection<Description>(dataAccess.GetDescriptions());
             OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
