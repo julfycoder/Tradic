@@ -31,18 +31,18 @@ namespace TradicConsole
             //Interview(transHelper, wordHelper,langHelper);
             //langHelper.AddEntity(new Language { Name = "English" });
 
-            //GetRandomWords(wordHelper);
+            GetRandomWords(wordHelper,langHelper);
 
-            TradicContext con = new TradicContext();
+            //TradicContext con = new TradicContext();
 
             //con.Set<Language>().Add(new Language { Name = "Russian" });
             //con.SaveChanges();
 
-            IEnumerable<Language> languages = con.Languages;
-            foreach (Language l in languages)
-            {
-                Console.WriteLine(l.Id + ": " + l.Name);
-            }
+            //IEnumerable<Language> languages = con.Languages;
+            //foreach (Language l in languages)
+            //{
+            //    Console.WriteLine(l.Id + ": " + l.Name);
+            //}
 
             Console.ReadLine();
         }
@@ -78,9 +78,17 @@ namespace TradicConsole
         //        for (int i = 0; i < Words.Count; i++) Console.WriteLine(counts[i]);
         //    }
         //}
-        static void GetRandomWords(WordHelper wordHelper)
+        static void GetRandomWords(WordHelper wordHelper,LanguageHelper langHelper)
         {
-            List<Word> Words = wordHelper.GetWords().ToList();
+            //List<Word> Words = wordHelper.GetWords().Where(w => w.LanguageId == langHelper.GetLanguages().First(l => l.Name == "English").Id).ToList();
+            List<Word> allWords = wordHelper.GetWords().ToList();
+            List<Word> Words = new List<Word>();
+            for (int i = 0; i < 12; i++)
+            {
+                Words.Add(allWords[i]);
+            }
+            
+
             int N = Words.Count;
             int delay = 150;
             int[] counts = new int[N];
@@ -98,7 +106,7 @@ namespace TradicConsole
                 Thread.Sleep(GetRandom(2, delay));
                 double r2 = rnd.Next(0, (int)r1);
 
-                double y = (N - 1) - r2;
+                double y = r2;
                 counts[(int)y]++;
 
                 Console.CursorLeft = 0;

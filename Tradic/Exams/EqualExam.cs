@@ -23,7 +23,9 @@ namespace Tradic.Exams
         Word openableTranslation;
         Word examinationalWord;
 
-        
+        bool answered = false;
+        bool isTranslationGiven = false;
+        bool isDescriptionGiven = false;
         public EqualExam(ITradicIterator entitiesIterator)
         {
             this.entitiesIterator = entitiesIterator;
@@ -33,15 +35,26 @@ namespace Tradic.Exams
         }
         public Word GenerateWord()
         {
-            Sort();
+            if (examinationalWord != null)
+            {
+                if (!answered) DecreaseTranslationKnowledge();
+                SaveChangedWord();
+            }
+            
             examinationalWord = null;
             translationWords = null;
 
+            Sort();
             while (translationWords == null)
             {
                 examinationalWord = allWords.ToList()[Selection.GetIndexByMRAlgo(allWords.Count())];
                 translationWords = GenerateTranslationWords(examinationalWord);
             }
+            GenerateTranslationWord();
+
+            answered = false;
+            isTranslationGiven = false;
+            isDescriptionGiven = false;
 
             return examinationalWord;
         }
@@ -49,6 +62,7 @@ namespace Tradic.Exams
         {
             Word translationWord = null;
             IEnumerable<Word> translationWords = allWords.Where(w => w.TranslationId == originalWord.TranslationId && w.Id != originalWord.Id && w.LanguageId != originalWord.LanguageId);
+            if (translationWords.Count() == 0) return null;
             Language language = languages.First(l => l.Id == translationWords.ToList()[Selection.GetRandom(translationWords.Count() - 1)].LanguageId);
             translationWords = translationWords.Where(w => w.LanguageId == language.Id);
 
@@ -61,16 +75,27 @@ namespace Tradic.Exams
 
         public Word GetTranslation()
         {
-            if (openableTranslation == null || translationWords.All(w => w.Id != openableTranslation.Id))
+            GenerateTranslationWord();
+            if (!isTranslationGiven)
             {
-                openableTranslation = translationWords.ToList()[Selection.GetRandom(translationWords.Count())];
+                DecreaseTranslationKnowledge();
+                isTranslationGiven = true;
             }
             return openableTranslation;
+        }
+        public Language GetTranslationLanguage()
+        {
+            return entitiesIterator.GetLanguages().First(l => l.Id == openableTranslation.LanguageId);
         }
         public Description GetDescription()
         {
             if (descriptions.Any(d => d.WordId == examinationalWord.Id))
             {
+                if (!isDescriptionGiven)
+                {
+                    DecreaseTranslationKnowledge();
+                    isDescriptionGiven = true;
+                }
                 return descriptions.First(d => d.WordId == examinationalWord.Id);
             }
             return null;
@@ -79,7 +104,17 @@ namespace Tradic.Exams
         {
             if (translationWords.Any(w => w.Text.ToLower() == text.ToLower()))
             {
+                if (!answered)
+                {
+                    IncreaseTranslationKnowledge();
+                    answered = true;
+                }
                 return true;
+            }
+            if (!answered)
+            {
+                DecreaseTranslationKnowledge();
+                answered = true;
             }
             return false;
         }
@@ -94,13 +129,18 @@ namespace Tradic.Exams
         }
         private void DecreaseTranslationKnowledge()
         {
-            examinationalWord.Priority++;
-            entitiesIterator.ChangeEntity(examinationalWord);
+            examinationalWord.Priority--;
         }
         private void IncreaseTranslationKnowledge()
         {
-            examinationalWord.Priority--;
-            entitiesIterator.ChangeEntity(examinationalWord);
+            examinationalWord.Priority++;
+        }
+        private void GenerateTranslationWord()
+        {
+            if (openableTranslation == null || translationWords.All(w => w.Id != openableTranslation.Id))
+            {
+                openableTranslation = translationWords.ToList()[Selection.GetRandom(translationWords.Count())];
+            }
         }
     }
 }

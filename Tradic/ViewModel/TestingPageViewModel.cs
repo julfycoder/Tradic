@@ -23,7 +23,7 @@ namespace Tradic.ViewModel
         ITradicIterator entitiesIterator;
         Page currentPage;
         IEnumerable<Language> languages;
-        EqualExam transService;
+        EqualExam equalExam;
 
         public TestingPageViewModel(Page currentPage)
             : base()
@@ -37,10 +37,10 @@ namespace Tradic.ViewModel
         {
             entitiesIterator = TradicIterator.GetInstance();
             languages = entitiesIterator.GetLanguages();
-            transService = new EqualExam(entitiesIterator);
+            equalExam = new EqualExam(entitiesIterator);
 
             GenerateTest();
-            TranslationLanguage = languages.First(l => l.Id == transService.GetTranslation().LanguageId);
+            TranslationLanguage = languages.First(l => l.Id == equalExam.GetTranslation().LanguageId);
         }
         protected override void InitializeCommands()
         {
@@ -64,15 +64,16 @@ namespace Tradic.ViewModel
         public ICommand GenerateTestCommand { get; set; }
         void GenerateTest()
         {
-            OriginalWord = transService.GenerateWord().Text;
+            OriginalWord = equalExam.GenerateWord().Text;
             TranslationWord = "";
             OriginalWordDescription = null;
+            TranslationLanguage = equalExam.GetTranslationLanguage();
         }
 
         public ICommand ApplyCommand { get; set; }
         void Apply()
         {
-            if(transService.IsTranslationCorrect(TranslationWord))
+            if(equalExam.IsTranslationCorrect(TranslationWord))
             {
                 GenerateTest();
             }
@@ -82,13 +83,16 @@ namespace Tradic.ViewModel
         public ICommand ShowOriginalWordDescriptionCommand { get; set; }
         void ShowOriginalWordDescription()
         {
-            OriginalWordDescription = transService.GetDescription().Text;
+            if (equalExam.GetDescription() != null)
+            {
+                OriginalWordDescription = equalExam.GetDescription().Text;
+            }
         }
 
         public ICommand ShowNextLetterCommand { get; set; }
         void ShowNextLetter()
         {
-            Word openableTranslation = transService.GetTranslation();
+            Word openableTranslation = equalExam.GetTranslation();
             if (TranslationWord == null || TranslationWord == "")
             {
                 TranslationWord = openableTranslation.Text[0].ToString();

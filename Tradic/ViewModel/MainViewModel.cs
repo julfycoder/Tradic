@@ -141,7 +141,10 @@ namespace Tradic.ViewModel
                     dataAccess.RemoveEntity(SelectedOriginalWord);
                     dataAccess.RemoveEntity(dataAccess.GetTranslations().Where(t => t.Id == SelectedOriginalWord.TranslationId).Last());
                 }
-                Descriptions.Remove(Descriptions.First(d => d.WordId == SelectedOriginalWord.Id));
+                if (Descriptions.Any(d => d.WordId == SelectedOriginalWord.Id))
+                {
+                    Descriptions.Remove(Descriptions.First(d => d.WordId == SelectedOriginalWord.Id));
+                }
 
                 Words.Remove(Words.First(w => w.Id == SelectedOriginalWord.Id));
                 OriginalWords.Remove(SelectedOriginalWord);

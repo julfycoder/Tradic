@@ -23,7 +23,7 @@ namespace Tradic.Algorithmics
             Thread.Sleep(delay);
             double r2 = rnd.Next(0, (int)r1);
 
-            return (int)((N - 1) - r2);
+            return (int)(r2);
         }
         public static int GetRandom(int max)
         {
