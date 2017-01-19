@@ -15,11 +15,11 @@ namespace Tradic.Exams
     {
         ITradicIterator entitiesIterator;
 
+        IEnumerable<Word> allWords; 
+        IEnumerable<Word> translationWords; 
         IEnumerable<Description> descriptions;
-        IEnumerable<Word> allWords;
         IEnumerable<Language> languages;
-        IEnumerable<Word> translationWords;
-        
+
         Word openableTranslation;
         Word examinationalWord;
 
@@ -31,20 +31,14 @@ namespace Tradic.Exams
             this.entitiesIterator = entitiesIterator;
             descriptions = entitiesIterator.GetDescriptions();
             languages = entitiesIterator.GetLanguages();
-            Sort();
+            SortAllWords();
         }
         public Word GenerateWord()
         {
-            if (examinationalWord != null)
-            {
-                if (!answered) DecreaseTranslationKnowledge();
-                SaveChangedWord();
-            }
-            
-            examinationalWord = null;
-            translationWords = null;
+            FinishExamination();
 
-            Sort();
+            SortAllWords();
+            translationWords = null;
             while (translationWords == null)
             {
                 examinationalWord = allWords.ToList()[Selection.GetIndexByMRAlgo(allWords.Count())];
@@ -52,23 +46,21 @@ namespace Tradic.Exams
             }
             GenerateTranslationWord();
 
-            answered = false;
-            isTranslationGiven = false;
-            isDescriptionGiven = false;
+            InitializeExaminaion();
 
             return examinationalWord;
         }
         private IEnumerable<Word> GenerateTranslationWords(Word originalWord)
         {
             Word translationWord = null;
-            IEnumerable<Word> translationWords = allWords.Where(w => w.TranslationId == originalWord.TranslationId && w.Id != originalWord.Id && w.LanguageId != originalWord.LanguageId);
-            if (translationWords.Count() == 0) return null;
-            Language language = languages.First(l => l.Id == translationWords.ToList()[Selection.GetRandom(translationWords.Count() - 1)].LanguageId);
-            translationWords = translationWords.Where(w => w.LanguageId == language.Id);
+            IEnumerable<Word> translationWords = allWords.Where(w => w.TranslationId == originalWord.TranslationId && w.Id != originalWord.Id && w.LanguageId != originalWord.LanguageId);//Getting exam word translations
+            if (translationWords.Count() == 0) return null;                                                                                                                               //If they're not exist return null
+            Language translationLanguage = languages.First(l => l.Id == translationWords.ToList()[Selection.GetRandom(translationWords.Count() - 1)].LanguageId);                         //Getting translation language
+            translationWords = translationWords.Where(w => w.LanguageId == translationLanguage.Id);                                                                                       //Getting translation words that has obtained language
 
             if (translationWords != null)
             {
-                translationWord = translationWords.ToList()[Selection.GetRandom(translationWords.Count() - 1)];
+                translationWord = translationWords.ToList()[Selection.GetRandom(translationWords.Count() - 1)];                                                                           //Getting translation word from available
             }
             return translationWords;
         }
@@ -102,24 +94,17 @@ namespace Tradic.Exams
         }
         public bool IsTranslationCorrect(string text)
         {
-            if (translationWords.Any(w => w.Text.ToLower() == text.ToLower()))
+            if (translationWords.Any(w => w.Text.ToLower() == text.ToLower()))  //If correct
             {
-                if (!answered)
-                {
-                    IncreaseTranslationKnowledge();
-                    answered = true;
-                }
+                if (!answered) IncreaseTranslationKnowledge();
                 return true;
             }
-            if (!answered)
-            {
-                DecreaseTranslationKnowledge();
-                answered = true;
-            }
+            if (!answered) DecreaseTranslationKnowledge();                      //If not correct
+            answered = true;
             return false;
         }
 
-        private void Sort()
+        private void SortAllWords()
         {
             allWords = entitiesIterator.GetWords().OrderBy(w => w, new WordsComparer());
         }
@@ -140,6 +125,21 @@ namespace Tradic.Exams
             if (openableTranslation == null || translationWords.All(w => w.Id != openableTranslation.Id))
             {
                 openableTranslation = translationWords.ToList()[Selection.GetRandom(translationWords.Count())];
+            }
+        }
+
+        private void InitializeExaminaion()
+        {
+            answered = false;
+            isTranslationGiven = false;
+            isDescriptionGiven = false;
+        }
+        private void FinishExamination()
+        {
+            if (examinationalWord != null)
+            {
+                if (!answered) DecreaseTranslationKnowledge();
+                SaveChangedWord();
             }
         }
     }
