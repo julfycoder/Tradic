@@ -17,15 +17,14 @@ namespace Tradic.Collections
 
         public IEnumerable<TextEntity> GetTextEntitiesConversely(IEnumerable<TextEntity> entities)
         {
-            entities.Reverse();
-            return entities;
+            return entities.Reverse();
         }
 
         public IEnumerable<TextEntity> GetTextEntitiesWhichContainSubstring(IEnumerable<TextEntity> entities, string substring)
         {
             List<TextEntity> currentEntities = new List<TextEntity>();
             foreach (TextEntity entity in entities)
-                if (entity.Text.Contains(substring)) currentEntities.Add(entity);
+                if (entity.Text.ToLower().Contains(substring)) currentEntities.Add(entity);
             return currentEntities;
         }
     }

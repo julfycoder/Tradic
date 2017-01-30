@@ -16,8 +16,8 @@ namespace Tradic.Collections
             for (int i = 0; i < x.Text.Length; i++)
             {
                 if (i > y.Text.Length - 1) return -1;
-                if (x.Text[i] > y.Text[i]) return 1;
-                else if (x.Text[i] < y.Text[i]) return -1;
+                if (x.Text.ToLower()[i] > y.Text.ToLower()[i]) return 1;
+                else if (x.Text.ToLower()[i] < y.Text.ToLower()[i]) return -1;
             }
             return 0;
         }

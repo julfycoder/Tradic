@@ -28,8 +28,7 @@ namespace Tradic.Collections
         }
         public IEnumerable<Word> GetWordsConversely(IEnumerable<Word> words)
         {
-            words.Reverse();
-            return words;
+            return words.Reverse();
         }
         public IEnumerable<Word> GetWordsWhichContainSubstring(IEnumerable<Word> words, string substring)
         {

@@ -13,6 +13,8 @@ using System.Collections.ObjectModel;
 using Tradic.View.Pages;
 using System.Windows;
 
+using Tradic.Collections;
+
 namespace Tradic.ViewModel
 {
     class MainViewModel : ViewModel
@@ -21,6 +23,7 @@ namespace Tradic.ViewModel
         ObservableCollection<Word> Words;
         ObservableCollection<Description> Descriptions;
         Page currentPage;
+        WordsEnumerator enumerator = new WordsEnumerator();
 
         public MainViewModel(Page currentPage)
             : base()
@@ -42,6 +45,7 @@ namespace Tradic.ViewModel
             PropertyChanged += UpdateTranslations;
             PropertyChanged += UpdateOriginalDescription;
             PropertyChanged += UpdateTranslationDescription;
+            PropertyChanged += SearchOriginalWords;
         }
         protected override void InitializeCommands()
         {
@@ -52,6 +56,10 @@ namespace Tradic.ViewModel
             GoToTestingPageCommand = new Command(arg => GoToTestingPage(currentPage));
             SaveOriginalWordDescriptionCommand = new Command(arg => SaveOriginalWordDescription());
             SaveTranslationWordDescriptionCommand = new Command(arg => SaveTranslationWordDescription());
+            SortOriginalWordsByAlphabetCommand = new Command(arg => SortOriginalWordsByAlphabet());
+            SortOriginalWordsByKnowledgeCommand = new Command(arg => SortOriginalWordsByKnowledge());
+            SortOriginalWordsByDateAddedCommand = new Command(arg => SortOriginalWordsByDateAdded());
+            ReverseOriginalWordsCommand = new Command(arg => ReverseOriginalWords());
         }
         protected override void InitializeProperties()
         {
@@ -97,6 +105,18 @@ namespace Tradic.ViewModel
                 e.PropertyName != "OriginalWordDescription")
             {
                 TranslationWordDescription = "";
+            }
+        }
+        void SearchOriginalWords(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SearchingSubstring")
+            {
+                List<Word> currentWords = OriginalWords.ToList();
+                OriginalWords.Clear();
+                foreach (Word w in enumerator.GetWordsWhichContainSubstring(Words.Where(w => w.LanguageId == SelectedOriginalLanguage.Id), SearchingSubstring))
+                {
+                    OriginalWords.Add(w);
+                }
             }
         }
 
@@ -221,6 +241,50 @@ namespace Tradic.ViewModel
                 }
             }
             else MessageBox.Show("You must choose translation word", "Choose warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        public ICommand SortOriginalWordsByAlphabetCommand { get; set; }
+        public void SortOriginalWordsByAlphabet()
+        {
+            List<Word> currentWords = OriginalWords.ToList();
+            OriginalWords.Clear();
+            foreach (Word w in enumerator.GetWordsSortedByAlphabet(currentWords))
+            {
+                OriginalWords.Add(w);
+            }
+        }
+
+        public ICommand SortOriginalWordsByKnowledgeCommand { get; set; }
+        public void SortOriginalWordsByKnowledge()
+        {
+            List<Word> currentWords = OriginalWords.ToList();
+            OriginalWords.Clear();
+            foreach (Word w in enumerator.GetWordsSortedByKnowledge(currentWords))
+            {
+                OriginalWords.Add(w);
+            }
+        }
+
+        public ICommand SortOriginalWordsByDateAddedCommand { get; set; }
+        public void SortOriginalWordsByDateAdded()
+        {
+            List<Word> currentWords = OriginalWords.ToList();
+            OriginalWords.Clear();
+            foreach (Word w in Words.Where(w => w.LanguageId == SelectedOriginalLanguage.Id&currentWords.Any(current=>current.Id==w.Id)))
+            {
+                OriginalWords.Add(w);
+            }
+        }
+
+        public ICommand ReverseOriginalWordsCommand { get; set; }
+        public void ReverseOriginalWords()
+        {
+            List<Word> currentWords = OriginalWords.ToList();
+            OriginalWords.Clear();
+            foreach (Word w in enumerator.GetWordsConversely(currentWords))
+            {
+                OriginalWords.Add(w);
+            }
         }
 
         #endregion
@@ -373,6 +437,20 @@ namespace Tradic.ViewModel
             {
                 _translationWordDescription = value;
                 NotifyPropertyChanged("TranslationWordDescription");
+            }
+        }
+
+        string _searchingSubstring;
+        public string SearchingSubstring
+        {
+            get
+            {
+                return _searchingSubstring;
+            }
+            set
+            {
+                _searchingSubstring = value;
+                NotifyPropertyChanged("SearchingSubstring");
             }
         }
 
