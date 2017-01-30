@@ -72,6 +72,7 @@ namespace Tradic.Exams
             {
                 DecreaseTranslationKnowledge();
                 isTranslationGiven = true;
+                answered = true;
             }
             return openableTranslation;
         }
@@ -87,6 +88,7 @@ namespace Tradic.Exams
                 {
                     DecreaseTranslationKnowledge();
                     isDescriptionGiven = true;
+                    answered = true;
                 }
                 return descriptions.First(d => d.WordId == examinationalWord.Id);
             }
@@ -96,7 +98,11 @@ namespace Tradic.Exams
         {
             if (translationWords.Any(w => w.Text.ToLower() == text.ToLower()))  //If correct
             {
-                if (!answered) IncreaseTranslationKnowledge();
+                if (!answered)
+                {
+                    IncreaseTranslationKnowledge();
+                    answered = true;
+                }
                 return true;
             }
             if (!answered) DecreaseTranslationKnowledge();                      //If not correct

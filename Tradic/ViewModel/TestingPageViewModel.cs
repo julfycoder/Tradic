@@ -108,11 +108,15 @@ namespace Tradic.ViewModel
                 {
                     for (int i = 0; i < TranslationWord.Length; i++)
                     {
-                        if (TranslationWord[i] != openableTranslation.Text[i])
+                        if (i < openableTranslation.Text.Length)
                         {
-                            TranslationWord = openableTranslation.Text.Substring(0, i + 1);
-                            break;
+                            if (TranslationWord[i] != openableTranslation.Text[i])
+                            {
+                                TranslationWord = openableTranslation.Text.Substring(0, i + 1);
+                                break;
+                            }
                         }
+                        else TranslationWord = openableTranslation.Text;
                     }
                 }
             }

@@ -17,7 +17,7 @@ namespace Tradic.ViewModel
 {
     class MainViewModel : ViewModel
     {
-        ITradicIterator dataAccess;
+        ITradicIterator tradicIterator;
         ObservableCollection<Word> Words;
         ObservableCollection<Description> Descriptions;
         Page currentPage;
@@ -32,10 +32,10 @@ namespace Tradic.ViewModel
 
         protected override void InitializeFields()
         {
-            dataAccess = TradicIterator.GetInstance();
-            Words = new ObservableCollection<Word>(dataAccess.GetWords());
-            Descriptions = new ObservableCollection<Description>(dataAccess.GetDescriptions());
-            OriginalLanguages = new ObservableCollection<Language>(dataAccess.GetLanguages());
+            tradicIterator = TradicIterator.GetInstance();
+            Words = new ObservableCollection<Word>(tradicIterator.GetWords());
+            Descriptions = new ObservableCollection<Description>(tradicIterator.GetDescriptions());
+            OriginalLanguages = new ObservableCollection<Language>(tradicIterator.GetLanguages());
         }
         protected override void InitializeEvents()
         {
@@ -114,12 +114,12 @@ namespace Tradic.ViewModel
         {
             if (SelectedTranslationWord != null)
             {
-                if (dataAccess.GetWords().Where(w => w.TranslationId == SelectedTranslationWord.TranslationId).Count() > 1)
-                    dataAccess.RemoveEntity(SelectedTranslationWord);
+                if (tradicIterator.GetWords().Where(w => w.TranslationId == SelectedTranslationWord.TranslationId).Count() > 1)
+                    tradicIterator.RemoveEntity(SelectedTranslationWord);
                 else
                 {
-                    dataAccess.RemoveEntity(SelectedTranslationWord);
-                    dataAccess.RemoveEntity(dataAccess.GetTranslations().Where(t => t.Id == SelectedTranslationWord.TranslationId).Last());
+                    tradicIterator.RemoveEntity(SelectedTranslationWord);
+                    tradicIterator.RemoveEntity(tradicIterator.GetTranslations().Where(t => t.Id == SelectedTranslationWord.TranslationId).Last());
                 }
                 Descriptions.Remove(Descriptions.First(d => d.WordId == SelectedTranslationWord.Id));
 
@@ -134,12 +134,12 @@ namespace Tradic.ViewModel
         {
             if (SelectedOriginalWord != null)
             {
-                if (dataAccess.GetWords().Where(w => w.TranslationId == SelectedOriginalWord.TranslationId).Count() > 1)
-                    dataAccess.RemoveEntity(SelectedOriginalWord);
+                if (tradicIterator.GetWords().Where(w => w.TranslationId == SelectedOriginalWord.TranslationId).Count() > 1)
+                    tradicIterator.RemoveEntity(SelectedOriginalWord);
                 else
                 {
-                    dataAccess.RemoveEntity(SelectedOriginalWord);
-                    dataAccess.RemoveEntity(dataAccess.GetTranslations().Where(t => t.Id == SelectedOriginalWord.TranslationId).Last());
+                    tradicIterator.RemoveEntity(SelectedOriginalWord);
+                    tradicIterator.RemoveEntity(tradicIterator.GetTranslations().Where(t => t.Id == SelectedOriginalWord.TranslationId).Last());
                 }
                 if (Descriptions.Any(d => d.WordId == SelectedOriginalWord.Id))
                 {
@@ -158,9 +158,9 @@ namespace Tradic.ViewModel
         {
             if (SelectedOriginalLanguage != null && SelectedTranslationLanguage != null && SelectedOriginalWord != null && TranslationWord != null && TranslationWord != "")
             {
-                Word lastWord = dataAccess.GetWords().Last();
+                Word lastWord = tradicIterator.GetWords().Last();
                 Word translation = new Word { Id = lastWord.Id + 1, Text = TranslationWord, LanguageId = SelectedTranslationLanguage.Id, TranslationId = SelectedOriginalWord.TranslationId };
-                dataAccess.AddEntity(translation);
+                tradicIterator.AddEntity(translation);
                 Words.Add(translation);
                 TranslationWords.Add(translation);
                 TranslationWord = "";
@@ -183,18 +183,18 @@ namespace Tradic.ViewModel
             if (SelectedOriginalWord != null)
             {
                 Description description;
-                if (dataAccess.GetDescriptions().ToList().Exists(d => d.WordId == SelectedOriginalWord.Id))
+                if (tradicIterator.GetDescriptions().ToList().Exists(d => d.WordId == SelectedOriginalWord.Id))
                 {
-                    description = dataAccess.GetDescriptions().First(d => d.WordId == SelectedOriginalWord.Id);
+                    description = tradicIterator.GetDescriptions().First(d => d.WordId == SelectedOriginalWord.Id);
                     description.Text = OriginalWordDescription;
-                    dataAccess.ChangeEntity(description);
+                    tradicIterator.ChangeEntity(description);
                     Descriptions.First(d => d.WordId == SelectedOriginalWord.Id).Text = OriginalWordDescription;
                 }
                 else
                 {
                     description = new Description { WordId = SelectedOriginalWord.Id, Text = OriginalWordDescription };
-                    dataAccess.AddEntity(description);
-                    Descriptions.Add(dataAccess.GetDescriptions().Last());
+                    tradicIterator.AddEntity(description);
+                    Descriptions.Add(tradicIterator.GetDescriptions().Last());
                 }
             }
             else MessageBox.Show("You must choose original word", "Choose warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -206,18 +206,18 @@ namespace Tradic.ViewModel
             if (SelectedTranslationWord != null)
             {
                 Description description;
-                if (dataAccess.GetDescriptions().ToList().Exists(d => d.WordId == SelectedTranslationWord.Id))
+                if (tradicIterator.GetDescriptions().ToList().Exists(d => d.WordId == SelectedTranslationWord.Id))
                 {
                     description = Descriptions.First(d => d.WordId == SelectedTranslationWord.Id);
                     description.Text = TranslationWordDescription;
-                    dataAccess.ChangeEntity(description);
+                    tradicIterator.ChangeEntity(description);
                     Descriptions.First(d => d.WordId == SelectedTranslationWord.Id).Text = TranslationWordDescription;
                 }
                 else
                 {
                     description = new Description { WordId = SelectedTranslationWord.Id, Text = TranslationWordDescription };
-                    dataAccess.AddEntity(description);
-                    Descriptions.Add(dataAccess.GetDescriptions().Last());
+                    tradicIterator.AddEntity(description);
+                    Descriptions.Add(tradicIterator.GetDescriptions().Last());
                 }
             }
             else MessageBox.Show("You must choose translation word", "Choose warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -285,7 +285,7 @@ namespace Tradic.ViewModel
             set
             {
                 _selected_original_language = value;
-                OriginalWords = new ObservableCollection<Word>(dataAccess.GetWords().Where(w => w.LanguageId == SelectedOriginalLanguage.Id));
+                OriginalWords = new ObservableCollection<Word>(tradicIterator.GetWords().Where(w => w.LanguageId == SelectedOriginalLanguage.Id));
                 TranslationLanguages = new ObservableCollection<Language>(OriginalLanguages.Where(l => l != _selected_original_language));
                 NotifyPropertyChanged("SelectedOriginalLanguage");
             }

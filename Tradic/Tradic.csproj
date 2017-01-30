@@ -86,11 +86,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Collections\ITextEntityEnumerator.cs" />
+    <Compile Include="Collections\TextEntitiesComparer.cs" />
+    <Compile Include="Collections\TextEntityEnumerator.cs" />
     <Compile Include="Collections\WordsComparer.cs" />
+    <Compile Include="Collections\WordsEnumerator.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Model\Entities\Description.cs" />
     <Compile Include="Model\Entities\Entity.cs" />
     <Compile Include="Model\Entities\Language.cs" />
+    <Compile Include="Model\Entities\TextEntity.cs" />
     <Compile Include="Model\Entities\Translation.cs" />
     <Compile Include="Model\Entities\Word.cs" />
     <Compile Include="Model\ITradicIterator.cs" />

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tradic.Model.Entities
 {
-    public class Word:Entity
+    public class Word:TextEntity
     {
-        public string Text { get; set; }
         public int LanguageId { get; set; }
         public int TranslationId { get; set; }
 
