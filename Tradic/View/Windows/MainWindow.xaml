@@ -5,5 +5,5 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tradic"
         mc:Ignorable="d"
-        Title="MainWindow" Height="419" Width="758" Source="../Pages/MainPage.xaml" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        Title="MainWindow" Height="419" Width="758" Source="../Pages/MainPage.xaml" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Icon="../Content/Cloud2.png">
 </NavigationWindow>
